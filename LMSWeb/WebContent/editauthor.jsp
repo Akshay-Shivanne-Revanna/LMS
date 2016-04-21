@@ -7,6 +7,7 @@
     <%Author author = null;
     if(request.getAttribute("author")!=null){
     	author = (Author)request.getAttribute("author");
+    	out.println("");
     	}%>
     
 <!DOCTYPE html>

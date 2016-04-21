@@ -47,7 +47,7 @@ public class AuthorDAO extends BaseDAO{
 		return (List<Author>) readAll("select * from tbl_author where authorName like ?", new Object[] {name});
 	}
 	
-	//READ AUTHORS BY ID
+	//READ AUTHOR BY ID
 	public Author readAuthorsByID(Integer authorId) throws ClassNotFoundException, SQLException{
 		List<Author> authors = (List<Author>) readAll("select * from tbl_author where authorId =?", new Object[] {authorId});
 		if(authors!=null && authors.size()>0){
