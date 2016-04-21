@@ -491,7 +491,7 @@ public class AdminServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		AdministratorService service = new AdministratorService();
-		String returnPath = "/administrator.html";
+		String returnPath = "/administrator.jsp";
 		int bookId = Integer.parseInt(request.getParameter("bookId"));
 		int branchId = Integer.parseInt(request.getParameter("branchId"));
 		int noOfCopies = Integer.parseInt(request.getParameter("noOfCopies"));
@@ -509,7 +509,7 @@ public class AdminServlet extends HttpServlet {
 			
 			try {
 				service.editBookCopies(bc);
-				returnPath = "/libops.html";
+				returnPath = "/libops.jsp";
 				addAuthorResult = "Book Copies edited sucessfully.";
 			} catch (ClassNotFoundException | SQLException e) {
 				returnPath = "/librarianOptions.jsp";
@@ -590,7 +590,7 @@ public class AdminServlet extends HttpServlet {
 	private void addAuthor(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		AdministratorService service = new AdministratorService();
-		String returnPath = "/administrator.html";
+		String returnPath = "/administrator.jsp";
 		System.out.println("Hello Post");
 		String authorName = request.getParameter("authorName");
 		String addAuthorResult = "";
@@ -599,7 +599,7 @@ public class AdminServlet extends HttpServlet {
 			a.setAuthorName(authorName);
 			try {
 				service.createAuthor(a);
-				returnPath = "/author.html"; 
+				returnPath = "/author.jsp"; 
 				addAuthorResult = "Author added sucessfully.";
 				
 			} catch (ClassNotFoundException | SQLException e) {
@@ -622,7 +622,7 @@ public class AdminServlet extends HttpServlet {
 	//VALIDATE CARD NO 
 	private void checkCardNo(HttpServletRequest request, HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
-		String returnPath = "/administrator.html";
+		String returnPath = "/administrator.jsp";
 		System.out.println("Hello Post");
 		String cardNo = request.getParameter("cardNo");
 		String addAuthorResult = null;
@@ -667,7 +667,7 @@ public class AdminServlet extends HttpServlet {
 	//VALIDATE CARD NO
 	private void checkCardNo2(HttpServletRequest request, HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
-		String returnPath = "/administrator.html";
+		String returnPath = "/administrator.jsp";
 		System.out.println("Hello Post");
 		String cardNo = request.getParameter("cardNo");
 		String addAuthorResult = null;
@@ -782,7 +782,7 @@ public class AdminServlet extends HttpServlet {
 				
 				service.bookCheckOut(bookId,cardNo,branchId);
 				System.out.println("the result was true");
-				RequestDispatcher rd = request.getRequestDispatcher("borrower.html");
+				RequestDispatcher rd = request.getRequestDispatcher("borrower.jsp");
 				try {
 					rd.forward(request, response);
 				} catch (ServletException | IOException e) {
@@ -801,7 +801,7 @@ public class AdminServlet extends HttpServlet {
 			HttpServletResponse response) {
 
 		AdministratorService service = new AdministratorService();
-		String returnPath = "/administrator.html";
+		String returnPath = "/administrator.jsp";
 		Integer branchId = Integer.parseInt(request.getParameter("branchId"));
 		String[] authorId = request.getParameterValues("authorId");
 		String[] genre_id = request.getParameterValues("genre_id");
@@ -868,7 +868,7 @@ public class AdminServlet extends HttpServlet {
 			throws ServletException, IOException {
 		AdministratorService service = new AdministratorService();
 		
-		String returnPath = "/borrower.html";
+		String returnPath = "/borrower.jsp";
 		String name = request.getParameter("borrowerName");
 		String address = request.getParameter("borrowerAddress");
 		String phone = request.getParameter("borrowerPhone");
@@ -903,7 +903,7 @@ public class AdminServlet extends HttpServlet {
 			HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
 		
-		String returnPath = "/administrator.html";
+		String returnPath = "/administrator.jsp";
 		String publisherName = request.getParameter("publisherName");
 		String publisherAddress = request.getParameter("publisherAddress");
 		String publisherPhone = request.getParameter("publisherPhone");
@@ -917,7 +917,7 @@ public class AdminServlet extends HttpServlet {
 			
 			try{
 				service.createPublisher(p);
-				returnPath = "/publisher.html";
+				returnPath = "/publisher.jsp";
 				addpublisherResult = "Publisher added sucessfully.";
 			}catch (ClassNotFoundException | SQLException e) {
 				returnPath = "/addpublisher.jsp";
@@ -945,7 +945,7 @@ public class AdminServlet extends HttpServlet {
 			HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
 		
-		String returnPath = "/branch.html";
+		String returnPath = "/branch.jsp";
 		String branchName = request.getParameter("branchName");
 		String branchAddress = request.getParameter("branchAddress");
 		String addbranchResult="";
@@ -961,7 +961,7 @@ public class AdminServlet extends HttpServlet {
 			try{
 				System.out.println("inside add branvh");
 				service.createBranch(br);
-				returnPath = "/branch.html";
+				returnPath = "/branch.jsp";
 				addbranchResult = "Branch added sucessfully.";
 			}catch (ClassNotFoundException | SQLException e) {
 				returnPath = "/addbranch.jsp";
@@ -988,7 +988,7 @@ public class AdminServlet extends HttpServlet {
 			HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
 		Integer publisherId = Integer.parseInt(request.getParameter("publisherId"));
-		String returnPath = "/publisher.html";
+		String returnPath = "/publisher.jsp";
 		String publisherName = request.getParameter("publisherName");
 		String publisherAddress = request.getParameter("publisherAddress");
 		String publisherPhone = request.getParameter("publisherPhone");
@@ -1006,7 +1006,7 @@ public class AdminServlet extends HttpServlet {
 			
 			try{
 				service.updatePublisher(p);
-				returnPath = "/publisher.html";
+				returnPath = "/publisher.jsp";
 				publisherUpdatedResult = "Publisher updated sucessfully.";
 			}catch (ClassNotFoundException | SQLException e) {
 				returnPath = "/editpublisher.jsp";
@@ -1033,7 +1033,7 @@ public class AdminServlet extends HttpServlet {
 			HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
 		Integer branchId = Integer.parseInt(request.getParameter("branchId"));
-		String returnPath = "/branch.html";
+		String returnPath = "/branch.jsp";
 		String branchName = request.getParameter("branchName");
 		String branchAddress = request.getParameter("branchAddress");
 		String addBranchResult="";
@@ -1072,7 +1072,7 @@ public class AdminServlet extends HttpServlet {
 	private void updateBook(HttpServletRequest request,
 			HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
-		String returnPath = "/branch.html";
+		String returnPath = "/branch.jsp";
 		Integer bookId = Integer.parseInt(request.getParameter("bookId"));
 		String title = request.getParameter("title");
 		String addBranchResult="";
@@ -1111,7 +1111,7 @@ public class AdminServlet extends HttpServlet {
 			HttpServletResponse response) {
 		AdministratorService service = new AdministratorService();
 		Integer cardNo = Integer.parseInt(request.getParameter("cardNo"));
-		String returnPath = "/borrower.html";
+		String returnPath = "/borrower.jsp";
 		String name = request.getParameter("borrowerName");
 		String address = request.getParameter("borrowerAddress");
 		String phone = request.getParameter("borrowerPhone");

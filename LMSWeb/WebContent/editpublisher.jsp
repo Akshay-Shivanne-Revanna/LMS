@@ -2,17 +2,14 @@
     <%@ page import="java.util.List" %>
     <%@ page import="java.util.ArrayList" %>
     <%@ page import="com.gcit.lms.entity.Publisher" %>
-    
+    <%@ include file="include.html" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
     <%Publisher publisher = null;
     if(request.getAttribute("publisher")!=null){
     	publisher = (Publisher)request.getAttribute("publisher");
     	}%>
     
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
+
 <title>LMS</title>
 <link href="main.css" rel="stylesheet" type="text/css" media="screen">
 <h2>Welcome to GCIT Library Management System - Admin</h2>
@@ -20,8 +17,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 
 ${result}
-</head>
-<body>
+
 	<form action="updatePublisher" method="post">
 	<br/><br/>
 		Publisher Name: <input type="text" name="publisherName" value="<%=publisher.getPublisherName() %>"> <br /><br/><br/>
@@ -30,5 +26,3 @@ ${result}
 		<input type="hidden" name="publisherId" value=<%=publisher.getPublisherId() %>>
 		Submit :<button type="submit">Edit Publisher</button>
 	</form>
-</body>
-</html>

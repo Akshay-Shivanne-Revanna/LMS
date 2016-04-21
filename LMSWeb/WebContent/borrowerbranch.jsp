@@ -7,7 +7,7 @@
     <%@ page import="com.gcit.lms.entity.Genre" %>
     <%@ page import="com.gcit.lms.entity.Branch" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
-    
+    <%@ include file="include.html" %>
     
     <% 
     	
@@ -19,20 +19,14 @@
     	AdministratorService service = new AdministratorService();
     	List<Branch> branch = service.getAllBranches();
      %>
-    
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
+
 <title>LMS</title>
 <link href="main.css" rel="stylesheet" type="text/css" media="screen">
 <h2>Welcome to GCIT Library Management System - Borrower</h2>
 <h3>Select Branch Details Below:</h3>
-<%-- <%=request.getAttribute("result") %> --%>
+
 ${result}
-</head>
-<body>
-	
+
 	<table border="2" id="branchbooksTable">
 	<tr>
 		<th>Branch Name</th>
@@ -54,6 +48,4 @@ ${result}
 
 </table>
 <br/><br/>
-<a href="borroweroptions.html">EXIT</a>
-</body>
-</html>
+<a href="borroweroptions.jsp">EXIT</a>

@@ -7,6 +7,7 @@
     <%@ page import="com.gcit.lms.entity.Genre" %>
     <%@ page import="com.gcit.lms.entity.Branch" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
+    <%@ include file="include.html" %>
     <% 
     	AdministratorService service = new AdministratorService();
     	List<Author> authors = service.getAllAuthors();
@@ -14,20 +15,12 @@
        	List<Publisher> publishers = service.getAllPublishers();
        	List<Branch> branch = service.getAllBranches();
      %>
-    
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>LMS</title>
-<link href="main.css" rel="stylesheet" type="text/css" media="screen">
+
 <h2>Welcome to GCIT Library Management System - Admin</h2>
-<h3>Enter Author Details Below:</h3>
-<%-- <%=request.getAttribute("result") %> --%>
+<h3>Enter Book Details Below:</h3>
+
 ${result}
-</head>
-<body>
-	
+
 	<form action="addBook" method="post">
 		
 		Book Title : <input type="text" name="bookTitle">
@@ -64,6 +57,3 @@ ${result}
 			
 		<button type="submit">Add Book</button>
 	</form>
-
-</body>
-</html>

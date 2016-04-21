@@ -7,23 +7,18 @@
     <%@ page import="com.gcit.lms.entity.Genre" %>
     <%@ page import="com.gcit.lms.entity.Branch" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
+    <%@ include file="include.html" %>
     <% 
     	AdministratorService service = new AdministratorService();
     	List<Branch> branch = service.getAllBranches();
      %>
-    
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
+
 <title>LMS</title>
 <h2>Welcome to GCIT Library Management System - Librarian</h2>
 <h3>Enter Author Details Below:</h3>
-<%-- <%=request.getAttribute("result") %> --%>
+
 ${result}
-</head>
-<body>
-	
+
 	<form action="selectBranch" method="post">
 	
 		Select Branch you Manage :
@@ -37,6 +32,3 @@ ${result}
 		<br/>
 		<button type="submit">Select Branch</button>
 	</form>
-
-</body>
-</html>

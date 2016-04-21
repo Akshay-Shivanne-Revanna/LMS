@@ -2,24 +2,19 @@
     <%@ page import="java.util.List" %>
     <%@ page import="java.util.ArrayList" %>
     <%@ page import="com.gcit.lms.entity.Borrower" %>
-    
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
+     <%@ include file="include.html" %>
     <%Borrower borrower = null;
     if(request.getAttribute("borrower")!=null){
-    	borrower = (Borrower)request.getAttribute("borrower");
+    	   	borrower = (Borrower)request.getAttribute("borrower");
     	}%>
     
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
+
 <title>LMS</title>
-<link href="main.css" rel="stylesheet" type="text/css" media="screen">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 
 ${result}
-</head>
-<body>
+
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 <h3>Edit Borrower Details Below:</h3>
 	<form action="updateBorrower" method="post">
@@ -29,7 +24,3 @@ ${result}
 		<input type="hidden" name="cardNo" value=<%=borrower.getCardNo() %>>
 		Submit :<button type="submit">Edit Borrower</button>
 	</form>
-	
-
-</body>
-</html>

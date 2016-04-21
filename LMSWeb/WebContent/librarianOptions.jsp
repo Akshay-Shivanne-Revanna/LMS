@@ -6,17 +6,14 @@
     <%@ page import="com.gcit.lms.entity.BookCopies" %>
     <%@ page import="com.gcit.lms.entity.Book" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
+    <%@ include file="include.html" %>
     <%List<BookCopies> bc = null;
     if(request.getAttribute("bookCopies")!=null){
     	bc = (List<BookCopies>)request.getAttribute("bookCopies");
     	}%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>LMS</title>
-</head>
-<body>
+
 <h4>Edit Book Copies Below:</h4>
 <table border="2" id="authorsTable">
 	<tr>
@@ -35,5 +32,3 @@
 	</tr>
 		<%}%>
 	</form>
-</body>
-</html>

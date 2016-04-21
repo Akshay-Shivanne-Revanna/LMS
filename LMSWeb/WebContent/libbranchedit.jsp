@@ -5,18 +5,15 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="com.gcit.lms.entity.Branch"%>
 <%@ page import="com.gcit.lms.service.AdministratorService"%>
+<%@ include file="include.html" %>
 <%
 	AdministratorService service = new AdministratorService();
 	List<Branch> branch = service.getAllBranches();
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>LMS</title>
-</head>
-<body>
+
 <table border="2" id="branchTable">
 	<tr>
 		<th>Branch Name</th>
@@ -31,6 +28,3 @@
 		</tr>
 		<%}%>
 	</table>
-</body>
-</body>
-</html>
