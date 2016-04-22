@@ -38,7 +38,8 @@ public class AuthorDAO extends BaseDAO{
 	}
 	
 	//READ ALL AUTHORS
-	public List<Author> readAllAuthors() throws ClassNotFoundException, SQLException{
+	public List<Author> readAllAuthors(int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
 		return (List<Author>) readAll("select * from tbl_author", null);
 	}
 	

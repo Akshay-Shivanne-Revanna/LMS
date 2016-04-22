@@ -29,7 +29,9 @@ function deleteBorrower(cardNo){
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
 <body>
-<table border="2" id="borrowerTable">
+<div class="row">
+	<div class="col-md-6">
+<table border="2" id="borrowerTable" class="table">
 	<tr>
 		<th>borrower name</th>
 		<th>address</th>
@@ -44,12 +46,23 @@ ${result}
 		<td><%out.println(b.getAddress()); %></td>
 		<td><%out.println(b.getPhone()); %></td>
 		
-		<td><button type="button" onclick="javascript:location.href='editBorrower?cardNo=<%=b.getCardNo() %>'">EDIT</button>
-		<td><button type="button" onclick="deleteBorrower(<%=b.getCardNo() %>)">DELETE</button>
+		<td align="center"><button type="button"
+						class="btn btn btn-primary" data-toggle="modal"
+						data-target="#myModal1"
+						href="editborrower.jsp?cardNo=<%=b.getCardNo()%>">EDIT</button></td>
+		
+		<td><button type="button" class="btn btn-danger" onclick="deleteBorrower(<%=b.getCardNo() %>)">DELETE</button>
 		</tr>
 		<%} %>
 		
 	
 
 </table>
-
+</div>
+</div>
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div>
+	</div>
+</div>

@@ -4,15 +4,15 @@
     <%@ page import="com.gcit.lms.entity.Borrower" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
      <%@ include file="include.html" %>
-    <%Borrower borrower = null;
-    if(request.getAttribute("borrower")!=null){
-    	   	borrower = (Borrower)request.getAttribute("borrower");
-    	}%>
-    
+   
+	<%AdministratorService adminService = new AdministratorService();
+ 	String cardNo = request.getParameter("cardNo");
+	Borrower borrower = adminService.getBorrowerByID(Integer.parseInt(cardNo));
+%>
 
 <title>LMS</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-
+<div class="modal-body">
 ${result}
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
@@ -24,3 +24,4 @@ ${result}
 		<input type="hidden" name="cardNo" value=<%=borrower.getCardNo() %>>
 		Submit :<button type="submit">Edit Borrower</button>
 	</form>
+</div>

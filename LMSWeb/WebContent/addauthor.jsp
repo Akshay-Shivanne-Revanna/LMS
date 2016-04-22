@@ -8,7 +8,7 @@ ${result}
 		
 		Author Name : <input type="text" name="authorName"> 
 		<br/>
-		<button type="submit">Add Author</button>
+		<button type="submit" class="btn btn-primary">Add Author</button>
 	</form>
 	
 	<a href="author.jsp">EXIT</a>

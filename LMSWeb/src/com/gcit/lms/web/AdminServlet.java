@@ -26,7 +26,7 @@ import com.gcit.lms.service.LibrarianService;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/addPublisher","/editPublisher","/updatePublisher","/addBranch" ,"/updateBranch","/editBranch","/addBorrower","/editBorrower","/updateBorrower","/deletePublisher","/deleteBranch","/deleteBorrower","/selectBranch","/updateBook","/deleteBook","/editBook","/checkCardNo","/updateBookCopies","/bookcheckIn","/borrowerBranch","/checkCardNo2","/borrowerCheckout","/branchbookscheckoutTable","/editborrower","/updateAuthor"})
+@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/addPublisher","/editPublisher","/updatePublisher","/addBranch" ,"/updateBranch","/editBranch","/addBorrower","/editBorrower","/updateBorrower","/deletePublisher","/deleteBranch","/deleteBorrower","/selectBranch","/updateBook","/deleteBook","/editBook","/checkCardNo","/updateBookCopies","/bookcheckIn","/borrowerBranch","/checkCardNo2","/borrowerCheckout","/branchbookscheckoutTable","/editborrower","/updateAuthor","/pageAuthors"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -89,6 +89,9 @@ public class AdminServlet extends HttpServlet {
 				bookcheckIn(request,response);
 				break;	
 		
+		case "/pageAuthors" :
+				pageAuthors(request,response);
+				break;	
 				
 		case "/borrowerBranch":
 			   borrowerBranch(request,response);
@@ -111,6 +114,28 @@ public class AdminServlet extends HttpServlet {
 
 
 	
+
+
+private void pageAuthors(HttpServletRequest request, HttpServletResponse response) {
+		
+		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		AdministratorService service = new AdministratorService();
+		try {
+			List<Author> authors = service.getAllAuthors(pageNo);
+			request.setAttribute("authors", authors);
+			RequestDispatcher rd = request.getRequestDispatcher("viewauthors.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -178,38 +203,40 @@ public class AdminServlet extends HttpServlet {
 
 	//DELETE AUTHOR
 	private void deleteAuthor(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("i am in delete");
 		Integer authorId = Integer.parseInt(request.getParameter("authorId"));
+		System.out.println(authorId);
+		
 		AdministratorService service = new AdministratorService();
 		StringBuilder str = new StringBuilder();
 		try {
+			
 			service.deleteAuthor(authorId);
-			List<Author> authors = service.getAllAuthors();
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			
+			System.out.println(pageNo);
+			List<Author> authors = service.getAllAuthors(pageNo);
+
 			str.append("<tr><th>Author Name</th><th>Book Title</th><th>Edit</th><th>Delete</th></tr>");
-			for(Author a: authors){
-				str.append("<tr><td>"+a.getAuthorName()+"</td><td>Book Name</td>");
-				str.append("<td>");
+			for (Author a : authors) {
+				
 				if(a.getBooks()!=null && a.getBooks().size() >0){
+					str.append("<tr><td>" + a.getAuthorName()+"</td>");
+					str.append("<td>");
 					for(Book b: a.getBooks()){
-						str.append(b.getTitle()+",");
-					}
-				}
-				str.append("<td><button type='button' onclick='javascript:location.href='editAuthor?authorId="+a.getAuthorId()+"''>EDIT</button><td>"
-							+ "<button type='button' onclick='deleteAuthor("+a.getAuthorId()+")'>DELETE</button></tr>)");
-			
-			}
-			
-			request.setAttribute("result", "Author Deleted Sucessfully");
-			RequestDispatcher rd = request.getRequestDispatcher("viewauthors.jsp");
-			try {
-			rd.forward(request, response);
-			} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
-		
+						str.append(b.getTitle()+ ", " );
 						
-		} catch (ClassNotFoundException | SQLException e) {
+						//str.append("<tr><td>" +  + "</td><td>Book Name</td>");
+						
+					}
+				}	
+				//str.append("<tr><td>" + a.getAuthorName() + "</td><td>Book Name</td>");
+				str.append("<td><button type='button' onclick='javascript:location.href='editAuthor?authorId="
+						+ a.getAuthorId() + "''>EDIT</button><td>"
+						+ "<button type='button' onclick='deleteAuthor("+a.getAuthorId()+")'>DELETE</button></tr>)" );
+			} 
+	}
+		catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -238,10 +265,10 @@ public class AdminServlet extends HttpServlet {
 			str.append("<tr><th>borrower name</th><th>address</th><th>phone</th><th>Edit</th><th>Delete</th></tr>");
 			for(Borrower b: borrowers){
 				str.append("<tr><td>"+b.getName()+"</td><td>"+b.getAddress()+"</td><td>"+b.getPhone()+"</td>");
-				str.append("<td><button type='button' onclick='javascript:location.href='editBorrower?cardNo="+b.getCardNo()+"''>EDIT</button><td>"+"<button type='button' onclick='deleteBorrower("+b.getCardNo()+")'>DELETE</button></tr>");
+				str.append("<td><button type='button' + class='btn btn-primary' onclick='javascript:location.href='editBorrower?cardNo="
+				+b.getCardNo()+"''>EDIT</button><td>"
+				+"<button type='button' class='btn btn-danger' onclick='deleteBorrower("+b.getCardNo()+")'>DELETE</button></tr>");
 		}   
-			
-			
 			
 		}catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -273,30 +300,24 @@ public class AdminServlet extends HttpServlet {
 			List<Book> books = service.getAllBooks();
 			str.append("<tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th>");
 			for(Book bk: books){
-				str.append("<tr><td>"+bk.getTitle()+"</td><td>"+bk.getAuthors()+"</td>");
-				str.append("<td><button type='button' onclick='javascript:location.href='editBook?bookId="+b.getBookId()+"''>EDIT</button><td><button type='button' onclick='deleteBook("+b.getBookId()+")'>DELETE</button></tr>");
+				
+				if(bk.getAuthors()!=null && bk.getAuthors().size() >0){
+					str.append("<tr><td>" + bk.getTitle() +"</td>");
+					str.append("<td>");
+					for(Author a: bk.getAuthors()){
+						str.append(a.getAuthorName()+ ", " );
+						
+						
+					}
+				}	
+				
+				str.append("<td><button type='button'+ class='btn btn-primary' onclick='javascript:location.href='editBook?bookId="
+				+b.getBookId()+"''>EDIT</button><td>"
+				+"<button type='button' class='btn btn-danger' onclick='deleteBook("+b.getBookId()+")'>DELETE</button></tr>");
 			}   
 			
-			/*<%for (Book b: books){ %>
-			<tr>
-			<td><% out.println(b.getTitle()); %></td>
-			<td><%if(b.getAuthors()!=null && b.getAuthors().size() >0){
-				for(Author a: b.getAuthors()){
-					out.println(a.getAuthorName());
-					out.println(", ");
-				}
-			}	
-			%></td>*/
-			
-			request.setAttribute("result", "Book Deleted Sucessfully");
-//			RequestDispatcher rd = request.getRequestDispatcher("viewbook.jsp");
-			/*try {
-			rd.forward(request, response);
-			} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}*/
 		
+
 						
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -327,10 +348,12 @@ public class AdminServlet extends HttpServlet {
 			str.append("<tr><th>Publisher Name</th><th>Publisher Address</th><th>Publisher Phone</th><th>Edit</th><th>Delete</th></tr>");
 			for(Publisher p: publishers){
 				str.append("<tr><td>"+p.getPublisherName()+"</td><td>"+p.getPublisherAddress()+"</td><td>"+p.getPublisherPhone()+"</td>");
-				str.append("<td><button type='button' onclick='javascript:location.href='editPublisher?publisherId="+p.getPublisherId()+"''>EDIT</button><td>"+"<button type='button' onclick='deleteAuthor("+p.getPublisherId()+")'>DELETE</button></tr>");
+				str.append("<td><button type='button' + class='btn btn-primary' onclick='javascript:location.href='editPublisher?publisherId="
+				+p.getPublisherId()+"''>EDIT</button><td>"
+				+"<button type='button' class='btn btn-danger' onclick='deleteAuthor("+p.getPublisherId()+")'>DELETE</button></tr>");
 		}   
 		
-					
+			
 			
 		}catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -361,8 +384,12 @@ public class AdminServlet extends HttpServlet {
 			
 			for(Branch br: branch){
 				str.append("<tr><td>"+br.getBranchName()+"</td><td>"+br.getBranchAddress()+"</td>");
-				str.append("<td><button type='button' onclick='javascript:location.href='editbranch?branchId="+br.getBranchId()+"''>EDIT</button><td>"+"<button type='button' onclick='deleteBranch("+br.getBranchId()+")'>DELETE</button></tr>");
-		}
+				str.append("<td><button type='button' + class='btn btn-primary' onclick='javascript:location.href='editbranch?branchId="
+				+br.getBranchId()+"''>EDIT</button><td>"
+				+"<button type='button' class='btn btn-danger' onclick='deleteBranch("+br.getBranchId()+")'>DELETE</button></tr>");
+		
+			}
+		
 		}catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

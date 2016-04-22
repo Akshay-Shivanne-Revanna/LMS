@@ -208,13 +208,29 @@ public class AdministratorService {
 	}
 	
 	//LIST ALL AUTHORS
-	public List<Author> getAllAuthors() throws ClassNotFoundException, SQLException{
+	public List<Author> getAllAuthors(int pageNo) throws ClassNotFoundException, SQLException{
 		ConnectionUtil c = new ConnectionUtil();
 		Connection conn = c.getConnection();
 		try{
 			AuthorDAO adao = new AuthorDAO(conn);
-			return adao.readAllAuthors();
-		}catch(Exception e){
+			return adao.readAllAuthors(pageNo);
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
+	
+	//GET AUTHOR COUNT
+	public Integer getAuthorCount() throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			AuthorDAO adao = new AuthorDAO(conn);
+			return adao.getCount();
+		}catch (Exception e){
 			e.printStackTrace();
 			//conn.rollback();
 		}finally{

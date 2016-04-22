@@ -22,6 +22,26 @@ public abstract class BaseDAO {
 		return conn;
 	}
 
+	private Integer pageNo;
+
+	private Integer pageSize;
+	
+	public int getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
 	public void save(String query, Object[] vals) throws ClassNotFoundException, SQLException{
 		Connection conn = getConnection();
 		PreparedStatement pstmt = conn.prepareStatement(query);
@@ -93,22 +113,25 @@ public abstract class BaseDAO {
 		}
 	}
 	
-	public List<?> readAll(String query, Object[] vals) throws SQLException, ClassNotFoundException{
+	public List<?> readAll(String query, Object[] vals) throws SQLException, ClassNotFoundException {
 		Connection conn = getConnection();
+		if (pageNo != null && pageNo >0) {
+			query+=" LIMIT "+(pageNo - 1)*10+", 10";
+		}
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		int count = 1;
-		
-		if(vals!=null){
-			for(Object o: vals){
+
+		if (vals != null) {
+			for (Object o : vals) {
 				pstmt.setObject(count, o);
 				count++;
 			}
 		}
+
 		ResultSet rs = pstmt.executeQuery();
-		
+
 		return extractData(rs);
 	}
-
 	
 	
 	public abstract List<?> extractData(ResultSet rs) throws SQLException;
