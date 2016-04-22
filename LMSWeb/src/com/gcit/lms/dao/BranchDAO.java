@@ -37,7 +37,8 @@ public class BranchDAO extends BaseDAO {
 	
 	
 	
-	public List<Branch> readAllBranches() throws ClassNotFoundException, SQLException{
+	public List<Branch> readAllBranches(int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
 		return (List<Branch>) readAll("select * from tbl_library_branch",null);
 	}
 
@@ -47,6 +48,11 @@ public class BranchDAO extends BaseDAO {
 			return branches.get(0);
 		}
 		return null;
+	}
+	
+	//GET COUNT OF NUMBER OF AUTHORS
+	public Integer getCount() throws ClassNotFoundException, SQLException{
+		return getCount("select count(*) from tbl_library_branch");
 	}
 	
 	@Override
@@ -88,6 +94,7 @@ public class BranchDAO extends BaseDAO {
 		return branch;
 	}
 
+	
 	
 	
 	

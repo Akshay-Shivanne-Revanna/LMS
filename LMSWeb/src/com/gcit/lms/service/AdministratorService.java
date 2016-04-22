@@ -286,12 +286,12 @@ public class AdministratorService {
 	}
 	
 	//GET PUBLISHERS
-	public List<Publisher> getAllPublishers() throws ClassNotFoundException, SQLException{
+	public List<Publisher> getAllPublishers(int pageNo) throws ClassNotFoundException, SQLException{
 		ConnectionUtil c = new ConnectionUtil();
 		Connection conn = c.getConnection();
 		try{
 			PublisherDAO pdao = new PublisherDAO(conn);
-			return pdao.readAllPublishers();
+			return pdao.readAllPublishers(pageNo);
 		}catch(Exception e){
 			e.printStackTrace();
 			//conn.rollback();
@@ -303,12 +303,12 @@ public class AdministratorService {
 	}
 		
 	//GET BORROWERS
-	public List<Borrower> getAllBorrowers() throws ClassNotFoundException, SQLException{
+	public List<Borrower> getAllBorrowers(int pageNo) throws ClassNotFoundException, SQLException{
 			ConnectionUtil c = new ConnectionUtil();
 			Connection conn = c.getConnection();
 			try{
 				BorrowerDAO pdao = new BorrowerDAO(conn);
-				return pdao.readAllBorrowers();
+				return pdao.readAllBorrowers(pageNo);
 			}catch(Exception e){
 				e.printStackTrace();
 				//conn.rollback();
@@ -320,12 +320,12 @@ public class AdministratorService {
 		}
 	
 	//GET ALL BRANCHES
-	public List<Branch> getAllBranches() throws ClassNotFoundException, SQLException {
+	public List<Branch> getAllBranches(int pageNo) throws ClassNotFoundException, SQLException {
 		ConnectionUtil c = new ConnectionUtil();
 		Connection conn = c.getConnection();
 		try{
 			BranchDAO pdao = new BranchDAO(conn);
-			return pdao.readAllBranches();
+			return pdao.readAllBranches(pageNo);
 		}catch(Exception e){
 			e.printStackTrace();
 			//conn.rollback();
@@ -336,12 +336,12 @@ public class AdministratorService {
 	}
 	
 	//GET ALL BOOKS
-	public List<Book> getAllBooks() throws ClassNotFoundException, SQLException{
+	public List<Book> getAllBooks(int pageNo) throws ClassNotFoundException, SQLException{
 		ConnectionUtil c = new ConnectionUtil();
 		Connection conn = c.getConnection();
 		try{
 			BookDAO bdao = new BookDAO(conn);
-			return bdao.readAllBooks();
+			return bdao.readAllBooks(pageNo);
 		}catch(Exception e){
 			e.printStackTrace();
 			//conn.rollback();
@@ -350,6 +350,71 @@ public class AdministratorService {
 		}
 		return null;
 	}
+	
+	
+	//GET BOOK COUNT
+	public Integer getBookCount() throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			BookDAO bdao = new BookDAO(conn);
+			return bdao.getCount();
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
+	
+	//GET BOOK COUNT
+	public Integer getBorrowerCount() throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			BorrowerDAO borrdao = new BorrowerDAO(conn);
+			return borrdao.getCount();
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+			}
+			return null;
+		}
+	
+	//GET BRANCH COUNT
+		public Integer getBranchCount() throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+			try{
+				BranchDAO brdao = new BranchDAO(conn);
+				return brdao.getCount();
+			}catch (Exception e){
+				e.printStackTrace();
+				//conn.rollback();
+			}finally{
+				conn.close();
+			}
+			return null;
+		}
+	
+	//GET BOOK COUNT
+	public Integer getPublisherCount() throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+			try{
+				PublisherDAO pdao = new PublisherDAO(conn);
+				return pdao.getCount();
+			}catch (Exception e){
+				e.printStackTrace();
+				//conn.rollback();
+			}finally{
+				conn.close();
+			}
+			return null;
+		}
 	
 	//SELECT BRANCH
 	private void selectBranch(HttpServletRequest request, HttpServletResponse response){

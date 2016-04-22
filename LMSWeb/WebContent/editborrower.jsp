@@ -3,7 +3,7 @@
     <%@ page import="java.util.ArrayList" %>
     <%@ page import="com.gcit.lms.entity.Borrower" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
-     <%@ include file="include.html" %>
+     
    
 	<%AdministratorService adminService = new AdministratorService();
  	String cardNo = request.getParameter("cardNo");

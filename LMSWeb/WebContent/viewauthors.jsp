@@ -31,6 +31,18 @@
 			$('#authorsTable').html(data);
 		});
 	}
+	
+	function pageAuthors(pageNo) {
+		out.println("i am inside pade ajax");
+		$.ajax({
+			url : "pageAuthors",
+			data : {
+				pageNo : pageNo
+			}
+		}).done(function(data) {
+			$('.pagination').html(data);
+		});
+	}
 </script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">

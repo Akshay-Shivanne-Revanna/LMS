@@ -8,8 +8,7 @@
 <%
 	AdministratorService adminService = new AdministratorService();
 	String branchId = request.getParameter("branchId");
-	Branch branch = adminService.getBranchByID(Integer
-			.parseInt(branchId));
+	Branch branch = adminService.getBranchByID(Integer.parseInt(branchId));
 %>
 
 <div class="modal-body">

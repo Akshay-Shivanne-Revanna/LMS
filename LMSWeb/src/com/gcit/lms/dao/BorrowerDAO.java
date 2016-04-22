@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import com.gcit.lms.entity.BookLoans;
 import com.gcit.lms.entity.Borrower;
 import com.gcit.lms.entity.Branch;
@@ -36,10 +37,15 @@ public class BorrowerDAO extends BaseDAO {
 		save("delete from tbl_borrower where cardNo = ?", new Object[] {borr.getCardNo()});
 	}
 	
-	public List<Borrower> readAllBorrowers() throws ClassNotFoundException, SQLException{
+	public List<Borrower> readAllBorrowers(int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
 		return (List<Borrower>) readAll("select * from tbl_borrower", null);
 	}
 	
+	//GET COUNT OF NUMBER OF AUTHORS
+	public Integer getCount() throws ClassNotFoundException, SQLException{
+		return getCount("select count(*) from tbl_borrower");
+	}
 	
 	public Borrower readBorrowerByID(Integer cardNo) throws ClassNotFoundException, SQLException{
 		List<Borrower> borrower = (List<Borrower>) readAll("select * from tbl_borrower where cardNo =?", new Object[] {cardNo});

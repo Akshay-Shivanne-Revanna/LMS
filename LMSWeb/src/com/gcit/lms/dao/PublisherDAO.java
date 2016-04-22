@@ -34,7 +34,8 @@ public class PublisherDAO extends BaseDAO{
 		save("delete from tbl_publisher where publisherId = ?", new Object[] {publisher.getPublisherId()});
 	}
 	
-	public List<Publisher> readAllPublishers() throws ClassNotFoundException, SQLException{
+	public List<Publisher> readAllPublishers(int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
 		return (List<Publisher>) readAll("select * from tbl_publisher", null);
 	}
 	
@@ -46,6 +47,10 @@ public class PublisherDAO extends BaseDAO{
 		return null;
 	}
 	
+	//GET COUNT OF NUMBER OF PUBLISHERS
+	public Integer getCount() throws ClassNotFoundException, SQLException{
+		return getCount("select count(*) from tbl_publisher");
+	}
 	
 	List<Publisher> publisher =  new ArrayList<Publisher>();
 	@Override

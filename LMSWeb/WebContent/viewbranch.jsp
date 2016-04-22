@@ -9,9 +9,14 @@
 <%@ include file="include.html"%>
 <%
 	AdministratorService service = new AdministratorService();
-   		List<Branch> branch = service.getAllBranches();
+	Integer branchCount = service.getBranchCount();
+	List<Branch> branch = new ArrayList<Branch>();
+	if (request.getAttribute("branch") != null) {
+		branch = (List<Branch>) request.getAttribute("branch");
+	} else {
+		branch = service.getAllBranches(1);
+	}
 %>
-
 
 
 <script type="text/javascript">
@@ -32,6 +37,32 @@ function deleteBranch(branchId){
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
+
+<nav>
+	<ul class="pagination">
+		<li><a href="#" aria-label="Previous"> <span
+				aria-hidden="true">&laquo;</span>
+		</a></li>
+		<%if(branchCount!=null &&  branchCount >0){
+			int pageNo = branchCount % 10;
+			int pages = 0;
+			if(pageNo == 0){
+				pages = branchCount/10;
+			}else{
+				pages = branchCount/10 + 1;
+			}
+			for(int i=1; i<=pages;i++){%>
+				<li><a href="pageBranch?pageNo=<%=i%>"><%=i %></a></li>
+			<%}
+			
+		} %>
+		<li>
+      		<a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+	</ul>
+</nav>
+
 <div class="row">
 	<div class="col-md-6">
 

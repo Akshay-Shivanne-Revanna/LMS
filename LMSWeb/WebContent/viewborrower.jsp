@@ -6,10 +6,16 @@
      <%@ page import="com.gcit.lms.entity.Borrower" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
     <%@ include file="include.html" %>
-    <% 
-    	AdministratorService service = new AdministratorService();
-    	List<Borrower> borrower = service.getAllBorrowers();
-    %>
+    <%
+	AdministratorService service = new AdministratorService();
+	Integer borrowerCount = service.getBorrowerCount();
+	List<Borrower> borrowers = new ArrayList<Borrower>();
+	if (request.getAttribute("borrowers") != null) {
+		borrowers = (List<Borrower>) request.getAttribute("borrowers");
+	} else {
+		borrowers = service.getAllBorrowers(1);
+	}
+%>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 <script type="text/javascript">
@@ -28,7 +34,32 @@ function deleteBorrower(cardNo){
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
-<body>
+
+<nav>
+	<ul class="pagination">
+		<li><a href="#" aria-label="Previous"> <span
+				aria-hidden="true">&laquo;</span>
+		</a></li>
+		<%if(borrowerCount!=null &&  borrowerCount >0){
+			int pageNo = borrowerCount % 10;
+			int pages = 0;
+			if(pageNo == 0){
+				pages = borrowerCount/10;
+			}else{
+				pages = borrowerCount/10 + 1;
+			}
+			for(int i=1; i<=pages;i++){%>
+				<li><a href="pageBorrower?pageNo=<%=i%>"><%=i %></a></li>
+			<%}
+			
+		} %>
+		<li>
+      		<a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+	</ul>
+</nav>
+
 <div class="row">
 	<div class="col-md-6">
 <table border="2" id="borrowerTable" class="table">
@@ -40,7 +71,7 @@ ${result}
 		<th>Delete</th>
 	</tr>
 	
-		<%for (Borrower b: borrower){ %>
+		<%for (Borrower b: borrowers){ %>
 		<tr>
 		<td><% out.println(b.getName()); %></td>
 		<td><%out.println(b.getAddress()); %></td>

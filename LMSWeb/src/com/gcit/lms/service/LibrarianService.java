@@ -12,21 +12,7 @@ import com.gcit.lms.entity.Branch;
 public class LibrarianService {
 
 	
-	public List<Branch> getAllbranches() throws SQLException, ClassNotFoundException{
-		
-		ConnectionUtil c = new ConnectionUtil();
-		Connection conn = c.getConnection();
-		try{
-			BranchDAO brdao = new BranchDAO(conn);
-			return brdao.readAllBranches();
-		}catch (Exception e){
-			e.printStackTrace();
-		}finally{
-			conn.close();
-		}
-		return null;
-	}
-	
+
 	
 	
 

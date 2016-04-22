@@ -26,7 +26,7 @@ import com.gcit.lms.service.LibrarianService;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/addPublisher","/editPublisher","/updatePublisher","/addBranch" ,"/updateBranch","/editBranch","/addBorrower","/editBorrower","/updateBorrower","/deletePublisher","/deleteBranch","/deleteBorrower","/selectBranch","/updateBook","/deleteBook","/editBook","/checkCardNo","/updateBookCopies","/bookcheckIn","/borrowerBranch","/checkCardNo2","/borrowerCheckout","/branchbookscheckoutTable","/editborrower","/updateAuthor","/pageAuthors"})
+@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/addPublisher","/editPublisher","/updatePublisher","/addBranch" ,"/updateBranch","/editBranch","/addBorrower","/editBorrower","/updateBorrower","/deletePublisher","/deleteBranch","/deleteBorrower","/selectBranch","/updateBook","/deleteBook","/editBook","/checkCardNo","/updateBookCopies","/bookcheckIn","/borrowerBranch","/checkCardNo2","/borrowerCheckout","/branchbookscheckoutTable","/editborrower","/updateAuthor","/pageAuthors","/pageBooks","/pagePublishers","/pageBranch","/pageBorrower"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -93,6 +93,22 @@ public class AdminServlet extends HttpServlet {
 				pageAuthors(request,response);
 				break;	
 				
+		case "/pageBooks" :
+				pageBooks(request,response);
+				break;	
+				
+		case "/pagePublishers" :
+				pagePublishers(request,response);
+				break;	
+				
+		case "/pageBranch" :
+				pageBranch(request,response);
+				break;
+				
+		case "/pageBorrower" :
+				pageBorrower(request,response);
+				break;	
+			
 		case "/borrowerBranch":
 			   borrowerBranch(request,response);
 				break;
@@ -112,8 +128,6 @@ public class AdminServlet extends HttpServlet {
 		}
 	}
 
-
-	
 
 
 private void pageAuthors(HttpServletRequest request, HttpServletResponse response) {
@@ -136,7 +150,92 @@ private void pageAuthors(HttpServletRequest request, HttpServletResponse respons
 		}
 		
 	}
+	
 
+private void pageBorrower(HttpServletRequest request,
+		HttpServletResponse response) {
+	Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+	AdministratorService service = new AdministratorService();
+	try {
+		List<Borrower> borrowers = service.getAllBorrowers(pageNo);
+		request.setAttribute("borrowers", borrowers);
+		RequestDispatcher rd = request.getRequestDispatcher("viewborrower.jsp");
+		try {
+			rd.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	} catch (ClassNotFoundException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+
+	//BRANCH PAGE
+	private void pageBranch(HttpServletRequest request,
+		HttpServletResponse response) {
+		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		AdministratorService service = new AdministratorService();
+		try {
+			List<Branch> branch = service.getAllBranches(pageNo);
+			request.setAttribute("branch", branch);
+			RequestDispatcher rd = request.getRequestDispatcher("viewbranch.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+
+	private void pagePublishers(HttpServletRequest request, HttpServletResponse response) {
+		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		AdministratorService service = new AdministratorService();
+		try {
+			List<Publisher> publishers = service.getAllPublishers(pageNo);
+			request.setAttribute("publishers", publishers);
+			RequestDispatcher rd = request.getRequestDispatcher("viewpublisher.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
+	private void pageBooks(HttpServletRequest request,
+		HttpServletResponse response) {
+		Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+		AdministratorService service = new AdministratorService();
+		try {
+			List<Book> books = service.getAllBooks(pageNo);
+			request.setAttribute("books", books);
+			RequestDispatcher rd = request.getRequestDispatcher("viewbook.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -261,7 +360,9 @@ private void pageAuthors(HttpServletRequest request, HttpServletResponse respons
 		
 		try {
 			service.deleteBorrower(bor);
-			List<Borrower> borrowers = service.getAllBorrowers();
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			System.out.println(pageNo);
+			List<Borrower> borrowers = service.getAllBorrowers(pageNo);
 			str.append("<tr><th>borrower name</th><th>address</th><th>phone</th><th>Edit</th><th>Delete</th></tr>");
 			for(Borrower b: borrowers){
 				str.append("<tr><td>"+b.getName()+"</td><td>"+b.getAddress()+"</td><td>"+b.getPhone()+"</td>");
@@ -297,7 +398,10 @@ private void pageAuthors(HttpServletRequest request, HttpServletResponse respons
 		try {
 			
 			service.deleteBook(b);
-			List<Book> books = service.getAllBooks();
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			
+			System.out.println(pageNo);
+			List<Book> books = service.getAllBooks(pageNo);
 			str.append("<tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th>");
 			for(Book bk: books){
 				
@@ -344,7 +448,9 @@ private void pageAuthors(HttpServletRequest request, HttpServletResponse respons
 		
 		try {
 			service.deletePublisher(pb);
-			List<Publisher> publishers = service.getAllPublishers();
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			System.out.println(pageNo);
+			List<Publisher> publishers = service.getAllPublishers(pageNo);
 			str.append("<tr><th>Publisher Name</th><th>Publisher Address</th><th>Publisher Phone</th><th>Edit</th><th>Delete</th></tr>");
 			for(Publisher p: publishers){
 				str.append("<tr><td>"+p.getPublisherName()+"</td><td>"+p.getPublisherAddress()+"</td><td>"+p.getPublisherPhone()+"</td>");
@@ -379,7 +485,9 @@ private void pageAuthors(HttpServletRequest request, HttpServletResponse respons
 		try {
 			
 			service.deleteBranch(brch);
-			List<Branch> branch = service.getAllBranches();
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			System.out.println(pageNo);
+			List<Branch> branch = service.getAllBranches(pageNo);
 			str.append("<tr><th>Branch Name</th><th>Branch Address</th><th>Edit</th><th>Delete</th></tr>");
 			
 			for(Branch br: branch){

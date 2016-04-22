@@ -9,7 +9,13 @@
 <%@ include file="include.html"%>
 <%
 	AdministratorService service = new AdministratorService();
-    	List<Publisher> publisher = service.getAllPublishers();
+	Integer publisherCount = service.getPublisherCount();
+	List<Publisher> publishers = new ArrayList<Publisher>();
+	if (request.getAttribute("publishers") != null) {
+		publishers = (List<Publisher>) request.getAttribute("publishers");
+	} else {
+		publishers = service.getAllPublishers(1);
+	}
 %>
 
 <script
@@ -33,6 +39,34 @@ function deletePublisher(publisherId){
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
+
+<nav>
+	<ul class="pagination">
+		<li><a href="#" aria-label="Previous"> <span
+				aria-hidden="true">&laquo;</span>
+		</a></li>
+		<%if(publisherCount!=null &&  publisherCount >0){
+			int pageNo = publisherCount % 10;
+			int pages = 0;
+			if(pageNo == 0){
+				pages = publisherCount/10;
+			}else{
+				pages = publisherCount/10 + 1;
+			}
+			for(int i=1; i<=pages;i++){%>
+				<li><a href="pagePublishers?pageNo=<%=i%>"><%=i %></a></li>
+			<%}
+			
+		} %>
+		<li>
+      		<a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+	</ul>
+</nav>
+
+
+
 <div class="row">
 	<div class="col-md-6">
 		<table border="2" id="publisherTable" class="table">
@@ -48,7 +82,7 @@ ${result}
 
 
 			<%
-				for (Publisher p : publisher) {
+				for (Publisher p : publishers) {
 			%>
 			<tr>
 				<td>

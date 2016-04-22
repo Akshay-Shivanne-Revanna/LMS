@@ -10,7 +10,13 @@
 
 <%
 	AdministratorService service = new AdministratorService();
-   		List<Book> books = service.getAllBooks();
+	Integer booksCount = service.getBookCount();
+	List<Book> books = new ArrayList<Book>();
+	if (request.getAttribute("books") != null) {
+		books = (List<Book>) request.getAttribute("books");
+	} else {
+		books = service.getAllBooks(1);
+	}
 %>
 
 <script
@@ -33,6 +39,33 @@ function deleteBook(bookId){
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
+
+<nav>
+	<ul class="pagination">
+		<li><a href="#" aria-label="Previous"> <span
+				aria-hidden="true">&laquo;</span>
+		</a></li>
+		<%if(booksCount!=null &&  booksCount >0){
+			int pageNo = booksCount % 10;
+			int pages = 0;
+			if(pageNo == 0){
+				pages = booksCount/10;
+			}else{
+				pages = booksCount/10 + 1;
+			}
+			for(int i=1; i<=pages;i++){%>
+				<li><a href="pageBooks?pageNo=<%=i%>"><%=i %></a></li>
+			<%}
+			
+		} %>
+		<li>
+      		<a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+	</ul>
+</nav>
+
+
 <div class="row">
 	<div class="col-md-6">
 		<table border="2" id="bookTable" class="table">

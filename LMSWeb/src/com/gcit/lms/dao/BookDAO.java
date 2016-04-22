@@ -38,7 +38,10 @@ public class BookDAO extends BaseDAO{
 		
 	}
 	
-	
+	//GET COUNT OF NUMBER OF AUTHORS
+	public Integer getCount() throws ClassNotFoundException, SQLException{
+		return getCount("select count(*) from tbl_book");
+	}
 
 	
 	public Integer addBookWithID(Book book) throws ClassNotFoundException, SQLException{
@@ -54,7 +57,8 @@ public class BookDAO extends BaseDAO{
 		save("delete from tbl_book where bookId = ?", new Object[] {book.getBookId()});
 	}
 	
-	public List<Book> readAllBooks() throws ClassNotFoundException, SQLException{
+	public List<Book> readAllBooks(int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
 		return (List<Book>) readAll("select * from tbl_book", null);
 	}
 	

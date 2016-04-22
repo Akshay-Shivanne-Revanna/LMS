@@ -15,12 +15,12 @@ public class TestService {
 		AdministratorService service = new AdministratorService();
 		//createAuthor(service);
 		//getAllAuthors(service);
-		getAllPublisher(service);
+		//getAllPublisher(service);
 	}
 
 	
 	
-	private static void createAuthor(AdministratorService service) throws ClassNotFoundException, SQLException {
+	/*private static void createAuthor(AdministratorService service) throws ClassNotFoundException, SQLException {
 		Author a = new Author();
 		
 		a.setAuthorName("Testing author from service2");
@@ -39,8 +39,8 @@ public class TestService {
 			System.out.println("-------------------");
 		}
 	}
-
-	private static void getAllBooks(AdministratorService service) throws ClassNotFoundException, SQLException {
+*/
+	/*private static void getAllBooks(AdministratorService service) throws ClassNotFoundException, SQLException {
 		List<Book> books = service.getAllBooks();
 		
 		for(Book b:books){
@@ -54,5 +54,5 @@ public class TestService {
 				}
 			}
 		}
-	}
+	}*/
 }
