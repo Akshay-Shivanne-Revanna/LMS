@@ -16,10 +16,11 @@ public class BookCopiesDAO extends BaseDAO{
 	public BookCopiesDAO(Connection conn) {
 		super(conn);
 	}
-	
+	@SuppressWarnings("unchecked")
 	//Reading borrower by cardNo.
 	public List<BookCopies> readBookCopiesByBranchID(Integer branchId) throws ClassNotFoundException, SQLException{
-		@SuppressWarnings("unchecked")
+		
+		
 		List<BookCopies> brr = (List<BookCopies>) readAll("select * from tbl_book_copies where branchId = ?", new Object[] {branchId});
 		if(brr!=null && brr.size() >0){
 			return brr;

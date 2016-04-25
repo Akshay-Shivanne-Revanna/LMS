@@ -24,12 +24,13 @@
      %>
 
 <title>LMS</title>
-<link href="main.css" rel="stylesheet" type="text/css" media="screen">
+
 <h2>Welcome to GCIT Library Management System - Borrower</h2>
 
 ${result}
-
-	<table border="2" id="borrowerCheckout">
+<div class="row">
+	<div class="col-md-6">
+	<table border="2" id="borrowerCheckout" class="table">
 	<tr>
 		<th>Book Title</th>
 		<th>Select</th>
@@ -39,12 +40,20 @@ ${result}
 		<tr>
 		<td><% out.println(b.getTitle()); %></td>
 		
-		<td><button type="button" onclick="javascript:location.href='borrowerCheckout?branchId=<%=branchId%>&bookId=<%=b.getBookId()%>&cardNo=<%=cardNo%>'">CHECK OUT</button>
+		<td><button type="button"  class="btn btn btn-primary" data-toggle="modal"
+						data-target="#myModal1"  onclick="javascript:location.href='borrowerCheckout?branchId=<%=branchId%>&bookId=<%=b.getBookId()%>&cardNo=<%=cardNo%>'">CHECK OUT</button>
 		</tr>
 		<%} %>
 		
 	
 
 </table>
+</div>
+</div>
 <br/><br/>
-<a href="borroweroptions.jsp">EXIT</a>
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div>
+	</div>
+</div>

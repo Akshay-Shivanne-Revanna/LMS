@@ -17,7 +17,7 @@
 		}
     
     	AdministratorService service = new AdministratorService();
-    	List<Branch> branch = service.getAllBranches();
+    	List<Branch> branch = service.getAllBranches(1);
      %>
 
 <title>LMS</title>
@@ -27,7 +27,9 @@
 
 ${result}
 
-	<table border="2" id="branchbooksTable">
+<div class="row">
+	<div class="col-md-6">
+	<table border="2" id="branchbooksTable" class="table">
 	<tr>
 		<th>Branch Name</th>
 		<th>Branch Address</th>
@@ -40,12 +42,20 @@ ${result}
 		<td><%out.println(br.getBranchAddress()); %></td>
 		
 		
-		<td><button type="button" onclick="javascript:location.href='borrowerBranch?branchId=<%=br.getBranchId()%>&cardNo=<%=cardNo%>'">SELECT</button>
+		<td><button type="button" class="btn btn btn-primary" data-toggle="modal"
+						data-target="#myModal1" onclick="javascript:location.href='borrowerBranch?branchId=<%=br.getBranchId()%>&cardNo=<%=cardNo%>'">SELECT</button>
 		</tr>
 		<%} %>
 		
 	
 
 </table>
+</div>
+</div>
 <br/><br/>
-<a href="borroweroptions.jsp">EXIT</a>
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div>
+	</div>
+</div>

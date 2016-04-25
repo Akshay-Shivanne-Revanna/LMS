@@ -6,74 +6,114 @@
 <%@ page import="com.gcit.lms.entity.Book"%>
 <%@ page import="com.gcit.lms.service.AdministratorService"%>
 <%@ include file="include.html"%>
-
 <%
 	AdministratorService service = new AdministratorService();
 	Integer authorsCount = service.getAuthorCount();
 	List<Author> authors = new ArrayList<Author>();
 	if (request.getAttribute("authors") != null) {
 		authors = (List<Author>) request.getAttribute("authors");
+		authorsCount = authors.size();
 	} else {
 		authors = service.getAllAuthors(1);
 	}
 %>
-
-<script
-	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript">
-	function deleteAuthor(authorId) {
-		$.ajax({
-			url : "deleteAuthor",
-			data : {
-				authorId : authorId
-			}
-		}).done(function(data) {
-			$('#authorsTable').html(data);
-		});
-	}
+function deleteAuthor(authorId){
 	
-	function pageAuthors(pageNo) {
-		out.println("i am inside pade ajax");
-		$.ajax({
-			url : "pageAuthors",
-			data : {
-				pageNo : pageNo
-			}
+	$.ajax({
+		  url: "deleteAuthor",
+		  data:{
+			  authorId: authorId
+		  }
 		}).done(function(data) {
-			$('.pagination').html(data);
+		  $('#authorsTable').html(data);
 		});
-	}
+}
+
+function searchAuthor(searchString){
+	out.println("i am in searchAuthor")
+	$.ajax({
+		  url: "searchAuthor",
+		  data:{
+			  authorId: searchString
+		  }
+		}).done(function(data) {
+		  $('#searchResults').html(data);
+		});
+}
+
+
+
 </script>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>LMS</title>
-<h2>Available Authors in the Library Management System</h2>
+<h2>Available Authors in LMS</h2>
 ${result}
 
+<form action="searchAuthors" method="post">
+<div class="row">
+   <div class="col-lg-6">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchAuthor()">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+       	
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><button onclick="searchAuthor();"> SEARCH  BY  AUTHOR </button></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+<!-- <form action="searchAuthors" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Author Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchAuthor()">
+		<button onclick="searchAuthor();">Search!</button>
+	</div>
+</form> -->
+
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  
+</div>
+
+<div id="searchResults">
 <nav>
 	<ul class="pagination">
 		<li><a href="#" aria-label="Previous"> <span
 				aria-hidden="true">&laquo;</span>
 		</a></li>
-		<%if(authorsCount!=null &&  authorsCount >0){
-			int pageNo = authorsCount % 10;
-			int pages = 0;
-			if(pageNo == 0){
-				pages = authorsCount/10;
-			}else{
-				pages = authorsCount/10 + 1;
+		<%
+			if (authorsCount != null && authorsCount > 0) {
+				int pageNo = authorsCount % 10;
+				int pages = 0;
+				if (pageNo == 0) {
+					pages = authorsCount / 10;
+				} else {
+					pages = authorsCount / 10 + 1;
+				}
+				for (int i = 1; i <= pages; i++) {
+		%>
+		<li><a href="pageAuthors?pageNo=<%=i%>"><%=i%></a></li>
+		<%
 			}
-			for(int i=1; i<=pages;i++){%>
-				<li><a href="pageAuthors?pageNo=<%=i%>"><%=i %></a></li>
-			<%}
-			
-		} %>
-		<li>
-      		<a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
+
+			}
+		%>
+		<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+		</a>
 	</ul>
 </nav>
+
+
+
 
 
 <div class="row">
@@ -81,7 +121,6 @@ ${result}
 		<table border="2" id="authorsTable" class="table">
 			<tr>
 				<th>Author Name</th>
-				<th>Book Title</th>
 				<th>Edit</th>
 				<th>Delete</th>
 			</tr>
@@ -95,16 +134,8 @@ ${result}
 						out.println(a.getAuthorName());
 					%>
 				</td>
-				<td>
-					<%
-						if (a.getBooks() != null && a.getBooks().size() > 0) {
-								for (Book b : a.getBooks()) {
-									out.println(b.getTitle());
-									out.println(", ");
-								}
-							}
-					%>
-				</td>
+
+
 				<td align="center"><button type="button"
 						class="btn btn btn-primary" data-toggle="modal"
 						data-target="#myModal1"
@@ -117,11 +148,9 @@ ${result}
 			<%
 				}
 			%>
-
-
-
 		</table>
 	</div>
+</div>
 </div>
 <div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
 	aria-labelledby="myLargeModalLabel">
@@ -129,4 +158,3 @@ ${result}
 		<div class="modal-content"></div>
 	</div>
 </div>
-

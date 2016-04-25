@@ -22,8 +22,9 @@
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
-
-<table border="2" id="publisherTable">
+<div class="row">
+	<div class="col-md-6">
+<table border="2" id="publisherTable" class="table">
 	<tr>
 		<th>Book Id</th>
 		<th>Book Title</th>
@@ -34,10 +35,19 @@ ${result}
 		<tr>
 		<td><% out.println(b.getBookId()); %></td>
 		<td><%out.println(b.getTitle()); %></td>
-		<td><button type="button" onclick="javascript:location.href='bookcheckIn?bookId=<%=b.getBookId() %>&cardNo=<%=cardNo%>'">CHECK IN</button>
+		<td><button type="button" class="btn btn btn-primary" data-toggle="modal"
+						data-target="#myModal1" onclick="javascript:location.href='bookcheckIn?bookId=<%=b.getBookId() %>&cardNo=<%=cardNo%>'">CHECK IN</button>
 		</tr>
 		<%} %>
 		
 	
 
 </table>
+</div>
+</div>
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div>
+	</div>
+</div>

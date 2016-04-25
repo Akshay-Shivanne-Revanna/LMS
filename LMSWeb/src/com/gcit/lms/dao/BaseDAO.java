@@ -46,7 +46,6 @@ public abstract class BaseDAO {
 		Connection conn = getConnection();
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		int count = 1;
-		System.out.println("update for publisher");
 		if(vals!=null){
 			for(Object o: vals){
 				
@@ -94,7 +93,7 @@ public abstract class BaseDAO {
 		}
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()){
-			System.out.println("inside result set");
+			
 			b_id=rs.getInt("branchId");
 		}
 		return b_id;

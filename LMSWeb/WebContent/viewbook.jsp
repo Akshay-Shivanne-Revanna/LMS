@@ -14,6 +14,7 @@
 	List<Book> books = new ArrayList<Book>();
 	if (request.getAttribute("books") != null) {
 		books = (List<Book>) request.getAttribute("books");
+		booksCount = books.size();
 	} else {
 		books = service.getAllBooks(1);
 	}
@@ -33,6 +34,44 @@ function deleteBook(bookId){
 		});
 }
 
+function searchBookByName(searchString){
+	
+	$.ajax({
+		  url: "searchBook",
+		  data:{
+			  bookId: searchString
+		  }
+		}).done(function(data) {
+		  $('#searchResults').html(data);
+		});
+}
+
+function searchBookByAuthor(searchString){
+	out.println("i am in searchAuthor")
+	$.ajax({
+		  url: "searchBookByAuthor",
+		  data:{
+			  authorId: searchString
+		  }
+		}).done(function(data) {
+		  $('#searchResults').html(data);
+		});
+}
+
+function searchBookByAuthor(searchString){
+	out.println("i am in searchAuthor")
+	$.ajax({
+		  url: "searchOverAllBooks",
+		  data:{
+			  bookId: searchString
+		  }
+		}).done(function(data) {
+		  $('#searchResults').html(data);
+		});
+}
+
+
+
 </script>
 
 <title>LMS</title>
@@ -40,6 +79,39 @@ function deleteBook(bookId){
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
 
+<form action="searchOverAllBooks" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchBookByAuthorOrTitle()">
+		<button onclick="searchBookByAuthorOrTitle()">Search</button>
+	</div>
+</form>
+<br/><br/>
+<form action="searchBooks" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Book Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchBookByName()">
+		<button onclick="searchBook();">Search By Book Title</button>
+	</div>
+</form>
+<br/><br/>
+<form action="searchBookByAuthor" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Author Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchBookByAuthor()">
+		<button onclick="searchBookByAuthor()">Search By Author Name</button>
+	</div>
+</form>
+<br/><br/>
+
+
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  
+</div>
+
+<div id="searchResults">
 <nav>
 	<ul class="pagination">
 		<li><a href="#" aria-label="Previous"> <span
@@ -114,7 +186,7 @@ ${result}
 		</table>
 	</div>
 </div>
-
+</div>
 <div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
 	aria-labelledby="myLargeModalLabel">
 	<div class="modal-dialog modal-lg">

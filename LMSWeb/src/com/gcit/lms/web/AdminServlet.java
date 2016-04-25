@@ -26,7 +26,7 @@ import com.gcit.lms.service.LibrarianService;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/addPublisher","/editPublisher","/updatePublisher","/addBranch" ,"/updateBranch","/editBranch","/addBorrower","/editBorrower","/updateBorrower","/deletePublisher","/deleteBranch","/deleteBorrower","/selectBranch","/updateBook","/deleteBook","/editBook","/checkCardNo","/updateBookCopies","/bookcheckIn","/borrowerBranch","/checkCardNo2","/borrowerCheckout","/branchbookscheckoutTable","/editborrower","/updateAuthor","/pageAuthors","/pageBooks","/pagePublishers","/pageBranch","/pageBorrower"})
+@WebServlet({ "/addAuthor", "/viewAuthor", "/addBook", "/editAuthor", "/deleteAuthor","/addPublisher","/editPublisher","/updatePublisher","/addBranch" ,"/updateBranch","/editBranch","/addBorrower","/editBorrower","/updateBorrower","/deletePublisher","/deleteBranch","/deleteBorrower","/selectBranch","/updateBook","/deleteBook","/editBook","/checkCardNo","/updateBookCopies","/bookcheckIn","/borrowerBranch","/checkCardNo2","/borrowerCheckout","/branchbookscheckoutTable","/editborrower","/updateAuthor","/pageAuthors","/pageBooks","/pagePublishers","/pageBranch","/pageBorrower","/selectBranch2","/libUpdateBranch","/libEditBranch","/searchAuthors","/searchBranch","/searchBorrower","/searchPublishers","/searchBooks","/searchBookByAuthor","/searchOverAllBooks"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -85,6 +85,12 @@ public class AdminServlet extends HttpServlet {
 				break;
 				
 				
+		
+		case "/libEditBranch" :
+				libEditBranch(request,response);
+				break;		
+				
+				
 		case "/bookcheckIn" :
 				bookcheckIn(request,response);
 				break;	
@@ -109,6 +115,11 @@ public class AdminServlet extends HttpServlet {
 				pageBorrower(request,response);
 				break;	
 			
+		case "/selectBranch":
+				selectBranch(request,response);
+				break;
+				
+				
 		case "/borrowerBranch":
 			   borrowerBranch(request,response);
 				break;
@@ -127,6 +138,19 @@ public class AdminServlet extends HttpServlet {
 			break;
 		}
 	}
+
+
+	
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -267,8 +291,9 @@ private void pageBorrower(HttpServletRequest request,
 		case "/updateBorrower":
 				updateBorrower(request, response);
 				break;
-		case "/selectBranch":
-				selectBranch(request,response);
+						
+		case "/selectBranch2":
+				selectBranch2(request,response);
 				break;
 		case "/updateBook":
 				updateBook(request,response);
@@ -277,7 +302,10 @@ private void pageBorrower(HttpServletRequest request,
 		case "/updateAuthor":
 				updateAuthor(request,response);
 				break;		
-				
+		
+		case "/libUpdateBranch" :
+				libUpdateBranch(request,response);
+				break;
 				
 		case "/checkCardNo":
 				checkCardNo(request,response);
@@ -292,11 +320,57 @@ private void pageBorrower(HttpServletRequest request,
 				updateBookCopies(request,response);
 				break;
 				
-		
+		case "/searchAuthors":
+				searchAuthors(request,response);
+				break;
+				
+		case "/searchBorrower":
+				searchBorrower(request,response);
+				break;
+			
+				
+		case "/searchPublishers":
+				searchPublishers(request,response);
+				break;		
+				
+		case "/searchBranch":
+			searchBranch(request,response);
+			break;
+			
+			
+		case "/searchBooks":
+			searchBooks(request,response);
+			break;	
+			
+		case "/searchBookByAuthor":
+			searchBookByAuthor(request,response);
+			break;
+			
+			
+		case "/searchOverAllBooks":
+			searchOverAllBooks(request,response);
+			break;	
+			
+			
 		default:
 			break;
 		}
 	}
+	
+
+
+	
+
+	
+
+
+	
+
+
+
+
+	
+
 	
 
 
@@ -487,6 +561,7 @@ private void pageBorrower(HttpServletRequest request,
 			service.deleteBranch(brch);
 			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			System.out.println(pageNo);
+		
 			List<Branch> branch = service.getAllBranches(pageNo);
 			str.append("<tr><th>Branch Name</th><th>Branch Address</th><th>Edit</th><th>Delete</th></tr>");
 			
@@ -497,7 +572,11 @@ private void pageBorrower(HttpServletRequest request,
 				+"<button type='button' class='btn btn-danger' onclick='deleteBranch("+br.getBranchId()+")'>DELETE</button></tr>");
 		
 			}
+			
+			
 		
+			
+			
 		}catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -601,9 +680,73 @@ private void pageBorrower(HttpServletRequest request,
 		}
 	}
 	
+	private void libEditBranch(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		Integer branchId = Integer.parseInt(request.getParameter("branchId"));
+		AdministratorService service = new AdministratorService();
+		Branch branch = null;
+		try {
+			branch = service.getBranchByID(branchId);
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		request.setAttribute("branch", branch);
+		RequestDispatcher rd = request.getRequestDispatcher("libbranchedit.jsp");
+		try {
+			rd.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	//UPDATE BRANCH
+		private void libUpdateBranch(HttpServletRequest request,
+				HttpServletResponse response) {
+			AdministratorService service = new AdministratorService();
+			Integer branchId = Integer.parseInt(request.getParameter("branchId"));
+			String returnPath = "/libops.jsp";
+			String branchName = request.getParameter("branchName");
+			String branchAddress = request.getParameter("branchAddress");
+			String addBranchResult="";
+			
+			if (branchName != null && branchName.length() > 3 && branchName.length() < 45) {
+				Branch br = new Branch();
+				br.setBranchName(branchName);
+				br.setBranchAddress(branchAddress);
+				br.setBranchId(branchId);
+				
+				try{
+					service.updateBranch(br);
+					returnPath = "/libops.jsp";
+					addBranchResult = "Branch details updated sucessfully.";
+				}catch (ClassNotFoundException | SQLException e) {
+					returnPath = "/editbranch.jsp";
+					addBranchResult = "publisher update failed";
+					e.printStackTrace();
+				}
+				
+			}else {
+				returnPath = "/editbranch.jsp";
+				addBranchResult = "branch Name cannot be empty or more than 45 chars in length";
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(returnPath);
+			request.setAttribute("result", addBranchResult);
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	//SELECT BRANCH
 	private void selectBranch(HttpServletRequest request, HttpServletResponse response){
+		System.out.println("I am inside select branch");
 		int branchId = Integer.parseInt(request.getParameter("branchId"));
+		System.out.println("branchId  " + branchId);
 		AdministratorService service = new AdministratorService();
 		List<BookCopies> bc = null;
 		
@@ -621,6 +764,18 @@ private void pageBorrower(HttpServletRequest request,
 		}
 	}
 
+	//SELECT BRANCH
+		private void selectBranch2(HttpServletRequest request, HttpServletResponse response){
+			int branchId = Integer.parseInt(request.getParameter("branchId"));
+			RequestDispatcher rd = request.getRequestDispatcher("libops.jsp");
+			try {
+				rd.forward(request, response);
+			} catch (ServletException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+	
+	
 	//UPDATE BOOK COPIES
 	private void updateBookCopies(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -753,6 +908,146 @@ private void pageBorrower(HttpServletRequest request,
 		request.setAttribute("result", addAuthorResult);
 		rd.forward(request, response);
 	}
+	
+	
+	
+	
+	private void searchAuthors(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Author> authors;
+		try {
+			authors = service.getAllAuthorsByName(searchString, 1);
+			request.setAttribute("authors", authors);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewauthors.jsp");
+		rd.forward(request, response);
+		
+	}
+
+	private void searchBorrower(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Borrower> borrowers;
+		try {
+			borrowers = service.getAllBorrowersByName(searchString, 1);
+			request.setAttribute("borrowers", borrowers);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewborrower.jsp");
+		rd.forward(request, response);
+		
+	}
+	
+	private void searchBooks(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Book> books;
+		try {
+			books = service.getAllBooksByName(searchString, 1);
+			request.setAttribute("books", books);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewbook.jsp");
+		rd.forward(request, response);
+		
+	}
+	
+	private void searchBookByAuthor(HttpServletRequest request,
+			HttpServletResponse response) {
+		System.out.println("i am inside function");
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Book> books;
+		try {
+			books = service.getAllBooksByAuthor(searchString, 1);
+			request.setAttribute("books", books);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewbook.jsp");
+		try {
+			rd.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	//SEARCH BY AUTHOR NAME OR BOOK TITLE
+	private void searchOverAllBooks(HttpServletRequest request,
+			HttpServletResponse response) {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Book> books;
+		try {
+			books = service.getAllBooksByAuthorOrTitle(searchString, 1);
+			request.setAttribute("books", books);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewbook.jsp");
+		try {
+			rd.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void searchPublishers(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Publisher> publishers;
+		try {
+			publishers = service.getAllPublishersByName(searchString, 1);
+			request.setAttribute("publishers", publishers);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewpublisher.jsp");
+		rd.forward(request, response);
+		
+	}
+	
+	private void searchBranch(HttpServletRequest request,
+			HttpServletResponse response) {
+		AdministratorService service = new AdministratorService();
+		String searchString = request.getParameter("searchString");
+		List<Branch> branch;
+		try {
+			branch = service.getAllBranchByName(searchString, 1);
+			request.setAttribute("branch", branch);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/viewbranch.jsp");
+		try {
+			rd.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	//VALIDATE CARD NO 
 	private void checkCardNo(HttpServletRequest request, HttpServletResponse response) {
@@ -951,6 +1246,9 @@ private void pageBorrower(HttpServletRequest request,
 			Publisher p = new Publisher();
 			p.setPublisherId(pubId);
 			b.setPublisher(p);
+			Branch br = new Branch();
+			br.setBranchId(branchId);
+			
 			List<Author> authors = new ArrayList<Author>();
 			for(String aid:authorId){
 				Author a = new Author();

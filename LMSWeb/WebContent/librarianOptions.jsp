@@ -15,7 +15,9 @@
 <title>LMS</title>
 
 <h4>Edit Book Copies Below:</h4>
-<table border="2" id="authorsTable">
+<div class="row">
+	<div class="col-md-6">
+<table border="2" id="authorsTable" class="table">
 	<tr>
 		<th>Book ID</th>
 		<th>No. of Copies</th>
@@ -28,7 +30,17 @@
 		<td><input type="text" name="noOfCopies" value="<%=bcop.getNoOfCopies() %>"></td>
 		<input type="hidden" name="branchId" value=<%=bcop.getBranch().getBranchId()%>>	
 		<input type="hidden" name="bookId" value=<%=bcop.getBook().getBookId()%>>	
-		<td><button type="submit">Edit Book</button></td>
+		<td><button type="submit" class="btn btn btn-primary" data-toggle="modal"
+						data-target="#myModal1">Edit Book</button></td>
 	</tr>
 		<%}%>
 	</form>
+</table>
+</div>
+</div>
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div>
+	</div>
+</div>

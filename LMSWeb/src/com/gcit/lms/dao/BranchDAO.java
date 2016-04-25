@@ -35,6 +35,12 @@ public class BranchDAO extends BaseDAO {
 		save("delete from tbl_library_branch where branchId = ?", new Object[] {branch.getBranchId()});
 	}
 	
+	//READ BRANCH BY NAME
+	public List<Branch> readBranchByName(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Branch>) readAll("select * from tbl_library_branch where branchName like ?", new Object[] {name});
+	}
 	
 	
 	public List<Branch> readAllBranches(int pageNo) throws ClassNotFoundException, SQLException{

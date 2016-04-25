@@ -10,10 +10,10 @@
     <%@ include file="include.html" %>
     <% 
     	AdministratorService service = new AdministratorService();
-    	List<Author> authors = service.getAllAuthors();
+    	List<Author> authors = service.getAllAuthors(1);
     	List<Genre> genres= service.getAllGenres();
-       	List<Publisher> publishers = service.getAllPublishers();
-       	List<Branch> branch = service.getAllBranches();
+       	List<Publisher> publishers = service.getAllPublishers(1);
+       	List<Branch> branch = service.getAllBranches(1);
      %>
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
@@ -31,28 +31,28 @@ ${result}
 			<option value="<%=a.getAuthorId()%>"><%=a.getAuthorName() %></option>
 			<%} %>
 		</select>
-		<br/>
+		<br/><br/><br/>
 		Associate Book to genres:<br/>
 		<select multiple name="genre_id">
 			<%for(Genre ge: genres){ %>
 			<option value="<%=ge.getGenreId()%>"><%=ge.getGenreName() %></option>
 			<%} %>
 		</select>
-		<br/>
-		Associate Book to Publisher:<br/>
+		<br/><br/><br/>
+		Associate Book to Publisher:
 		<select name="pubId">
 			<%for(Publisher p: publishers){ %>
 			<option value="<%=p.getPublisherId()%>"><%=p.getPublisherName() %></option>
 			<%} %>
 		</select>
-		<br/>
-		Associate Book to Branch:<br/>
+		<br/><br/><br/>
+		Associate Book to Branch:
 		<select name="branchId">
 			<%for(Branch b: branch){ %>
 			<option value="<%=b.getBranchId()%>"><%=b.getBranchName() %></option>
 			<%} %>
 		</select>
-		<br/>
+		<br/><br/><br/>
 		
 			
 		<button type="submit">Add Book</button>

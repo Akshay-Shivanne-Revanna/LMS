@@ -1,30 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
+	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="com.gcit.lms.entity.Branch"%>
 <%@ page import="com.gcit.lms.service.AdministratorService"%>
-<%@ include file="include.html" %>
+
 <%
-	AdministratorService service = new AdministratorService();
-	List<Branch> branch = service.getAllBranches();
+	AdministratorService adminService = new AdministratorService();
+	String branchId = request.getParameter("branchId");
+	Branch branch = adminService.getBranchByID(Integer.parseInt(branchId));
 %>
 
+<div class="modal-body">
 
-<title>LMS</title>
+	<h3>Edit Branch Details Below:</h3>
 
-<table border="2" id="branchTable">
-	<tr>
-		<th>Branch Name</th>
-		<th>Edit</th>
-		<th>Delete</th>
-	</tr>
-		<tr>
-		<%for(Branch b: branch){%>
-				<td><%out.println(b.getBranchName()); %></td>
-		<td><button type="button" onclick="javascript:location.href='editBranch?branchId=<%=b.getBranchId()%>'">EDIT</button>
-		<td><button type="button" onclick="javascript:location.href='deleteBranch?branchId=<%=b.getBranchId()%>'">DELETE</button>
-		</tr>
-		<%}%>
-	</table>
+	${result}
+
+	<form action="libUpdateBranch" method="post">
+		Branch Name: <input type="text" name="branchName"
+			value="<%=branch.getBranchName()%>"> <br />
+		<br />
+		<br /> Branch Address:<input type="text" name="branchAddress"
+			value="<%=branch.getBranchAddress()%>"> <br />
+		<br />
+		<br /> <input type="hidden" name="branchId"
+			value=<%=branch.getBranchId()%>> Submit :
+		<button type="submit">Edit Branch</button>
+	</form>
+</div>

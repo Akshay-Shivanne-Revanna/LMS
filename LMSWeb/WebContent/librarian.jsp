@@ -8,18 +8,24 @@
     <%@ page import="com.gcit.lms.entity.Branch" %>
     <%@ page import="com.gcit.lms.service.AdministratorService" %>
     <%@ include file="include.html" %>
-    <% 
-    	AdministratorService service = new AdministratorService();
-    	List<Branch> branch = service.getAllBranches();
-     %>
+    <%
+		AdministratorService service = new AdministratorService();
+		Integer branchCount = service.getBranchCount();
+		List<Branch> branch = new ArrayList<Branch>();
+		if (request.getAttribute("branch") != null) {
+			branch = (List<Branch>) request.getAttribute("branch");
+		} else {
+			branch = service.getAllBranches(1);
+		}
+	%>
 
 <title>LMS</title>
 <h2>Welcome to GCIT Library Management System - Librarian</h2>
-<h3>Enter Author Details Below:</h3>
+
 
 ${result}
 
-	<form action="selectBranch" method="post">
+	<form action="selectBranch2" method="post">
 	
 		Select Branch you Manage :
 		

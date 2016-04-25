@@ -47,6 +47,13 @@ public class PublisherDAO extends BaseDAO{
 		return null;
 	}
 	
+	//READ AUTHORS BY NAME
+	public List<Publisher> readPublishersByName(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Publisher>) readAll("select * from tbl_publisher where publisherName like ?", new Object[] {name});
+	}
+	
 	//GET COUNT OF NUMBER OF PUBLISHERS
 	public Integer getCount() throws ClassNotFoundException, SQLException{
 		return getCount("select count(*) from tbl_publisher");

@@ -223,6 +223,121 @@ public class AdministratorService {
 		return null;
 	}
 	
+	//LIST ALL AUTHORS BY NAME
+	public List<Author> getAllAuthorsByName(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			AuthorDAO adao = new AuthorDAO(conn);
+			return adao.readAuthorsByName(searchString,pageNo);
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
+	
+	
+	//LIST ALL AUTHORS BY NAME
+		public List<Book> getAllBooksByName(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+			try{
+				BookDAO bdao = new BookDAO(conn);
+				return bdao.readBooksByName(searchString,pageNo);
+			}catch (Exception e){
+				e.printStackTrace();
+				//conn.rollback();
+			}finally{
+				conn.close();
+			}
+			return null;
+		}
+	
+		//LIST ALL BOOKS BY AUTHOR NAME
+		public List<Book> getAllBooksByAuthor(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+			try{
+				BookDAO bdao = new BookDAO(conn);
+					return bdao.readBooksByAuthor(searchString,pageNo);
+				}catch (Exception e){
+					e.printStackTrace();
+					//conn.rollback();
+				}finally{
+					conn.close();
+				}
+					return null;
+			}
+	
+		
+		
+		//LIST ALL BOOKS BY AUTHOR NAME
+			public List<Book> getAllBooksByAuthorOrTitle(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+				ConnectionUtil c = new ConnectionUtil();
+				Connection conn = c.getConnection();
+				try{
+					BookDAO bdao = new BookDAO(conn);
+						return bdao.readBooksByAuthorOrTitle(searchString,pageNo);
+					}catch (Exception e){
+						e.printStackTrace();
+						//conn.rollback();
+					}finally{
+						conn.close();
+					}
+						return null;
+				}
+	
+		
+	//LIST ALL BRANCHES BY NAME
+	public List<Branch> getAllBranchByName(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			BranchDAO brdao = new BranchDAO(conn);
+			return brdao.readBranchByName(searchString,pageNo);
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
+	
+	
+	public List<Borrower> getAllBorrowersByName(String searchString, Integer pageNo) throws ClassNotFoundException, SQLException {
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			BorrowerDAO brdao = new BorrowerDAO(conn);
+			return brdao.readBorrowerByName(searchString, pageNo);
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
+	
+	public List<Publisher> getAllPublishersByName(String searchString, Integer pageNo) throws ClassNotFoundException, SQLException {
+		ConnectionUtil c = new ConnectionUtil();
+		Connection conn = c.getConnection();
+		try{
+			PublisherDAO pdao = new PublisherDAO(conn);
+			return pdao.readPublishersByName(searchString, pageNo);
+		}catch (Exception e){
+			e.printStackTrace();
+			//conn.rollback();
+		}finally{
+			conn.close();
+		}
+		return null;
+	}
+	
 	//GET AUTHOR COUNT
 	public Integer getAuthorCount() throws ClassNotFoundException, SQLException{
 		ConnectionUtil c = new ConnectionUtil();
@@ -690,6 +805,8 @@ public class AdministratorService {
 		
 		
 	}
+
+	
 
 }
 

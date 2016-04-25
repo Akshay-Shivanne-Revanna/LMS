@@ -13,6 +13,7 @@
 	List<Branch> branch = new ArrayList<Branch>();
 	if (request.getAttribute("branch") != null) {
 		branch = (List<Branch>) request.getAttribute("branch");
+		branchCount = branch.size();
 	} else {
 		branch = service.getAllBranches(1);
 	}
@@ -21,13 +22,28 @@
 
 <script type="text/javascript">
 function deleteBranch(branchId){
+	out.println("I am in delete function");
 	$.ajax({
 		  url: "deleteBranch",
 		  data:{
 			  branchId: branchId
 		  }
 		}).done(function(data) {
+		  $("#pagination").html(data);
 		  $('#branchTable').html(data);
+		});
+}
+
+function searchBranch(searchString){
+	
+	$.ajax({
+		  url: "searchBranch",
+		  data:{
+			  branchId: searchBranch
+		  }
+		}).done(function(data) {
+		  
+		  $('#searchResults').html(data);
 		});
 }
 
@@ -38,6 +54,16 @@ function deleteBranch(branchId){
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
 
+<form action="searchBranch" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Branch Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchBranch()">
+		<button onclick="searchBranch();">Search!</button>
+	</div>
+</form>
+
+
+<div id="searchResults">
 <nav>
 	<ul class="pagination">
 		<li><a href="#" aria-label="Previous"> <span
@@ -108,6 +134,7 @@ ${result}
 			
 		</table>
 	</div>
+</div>
 </div>
 <div id="myModal1" class="modal fade" tabindex="-1" role="dialog"
 	aria-labelledby="myLargeModalLabel">

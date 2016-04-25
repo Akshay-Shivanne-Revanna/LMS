@@ -7,3 +7,6 @@
 	
 	<a href="viewborrower.jsp">view Borrower</a>
 	<br><br><br>
+
+	<a href="testing.jsp">Testing</a>
+	<br><br><br>

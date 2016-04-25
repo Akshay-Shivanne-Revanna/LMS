@@ -12,6 +12,7 @@
 	List<Borrower> borrowers = new ArrayList<Borrower>();
 	if (request.getAttribute("borrowers") != null) {
 		borrowers = (List<Borrower>) request.getAttribute("borrowers");
+		borrowerCount=borrowers.size();
 	} else {
 		borrowers = service.getAllBorrowers(1);
 	}
@@ -30,11 +31,38 @@ function deleteBorrower(cardNo){
 		});
 }
 
+function searchBorrower(searchString){
+	
+	$.ajax({
+		  url: "searchBorrower",
+		  data:{
+			  cardNo: searchString
+		  }
+		}).done(function(data) {
+		  $('#searchResults').html(data);
+		});
+}
+
 </script>
 
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
 
+<form action="searchBorrower" method="post">
+	<div class="input-group">
+		<input type="text" class="form-control" placeholder="Borrower Name"
+			aria-describedby="basic-addon1" name="searchString" onchange="searchAuthor()">
+		<button onclick="searchBorrower();">Search!</button>
+	</div>
+</form>
+
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  
+</div>
+
+<div id="searchResults">
 <nav>
 	<ul class="pagination">
 		<li><a href="#" aria-label="Previous"> <span
@@ -89,6 +117,7 @@ ${result}
 	
 
 </table>
+</div>
 </div>
 </div>
 <div id="myModal1" class="modal fade" tabindex="-1" role="dialog"

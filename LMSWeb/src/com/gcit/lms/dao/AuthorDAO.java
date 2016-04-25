@@ -44,7 +44,9 @@ public class AuthorDAO extends BaseDAO{
 	}
 	
 	//READ AUTHORS BY NAME
-	public List<Author> readAuthorsByName(String name) throws ClassNotFoundException, SQLException{
+	public List<Author> readAuthorsByName(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
 		return (List<Author>) readAll("select * from tbl_author where authorName like ?", new Object[] {name});
 	}
 	

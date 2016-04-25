@@ -70,6 +70,26 @@ public class BookDAO extends BaseDAO{
 		return null;
 	}
 	
+	//READ AUTHORS BY NAME
+	public List<Book> readBooksByName(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Book>) readAll("select * from tbl_book where title like ?", new Object[] {name});
+	}
+	
+	//READ AUTHORS BY NAME
+	public List<Book> readBooksByAuthor(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Book>) readAll("select * from tbl_author a inner join tbl_book_authors ba on a.authorId=ba.authorId inner join tbl_book b on ba.bookId = b.bookId where authorName like ?", new Object[] {name});
+	}
+	
+	//READ AUTHORS BY NAME
+	public List<Book> readBooksByAuthorOrTitle(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Book>) readAll("select * from tbl_author a inner join tbl_book_authors ba on ba.authorId=a.authorId inner join tbl_book b on b.bookId = ba.bookId where a.authorName like ? OR b.title like ?", new Object[] {name,name});
+	}
 	
 	public List<Book> readBookByBranchID(Integer branchId) throws ClassNotFoundException, SQLException {
 		return (List<Book>) readAll("select * from tbl_book where bookId in (select bc.bookId from tbl_book_copies as bc where bc.branchId = ? and noOfCopies>0)", new Object[] {branchId});
@@ -81,7 +101,6 @@ public class BookDAO extends BaseDAO{
 		AuthorDAO adao = new AuthorDAO(getConnection());
 		
 		while(rs.next()){
-			System.out.println("i am in result set");
 			Book b = new Book();
 			b.setBookId(rs.getInt("bookId"));
 			b.setTitle(rs.getString("title"));
