@@ -70,6 +70,28 @@ public class AuthorDAO extends BaseDAO{
 		save("delete from tbl_author where authorId =?",new Object[]{authorId});
 	}
 	
+	
+	//READ AUTHORS BY NAME
+	public List<Author> readAuthorsByAuthorName(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Author>) readAll("select * from tbl_author where authorName like ?", new Object[] {name});
+	}
+	
+	//READ AUTHORS BY BOOK TITLE
+	public List<Author> readAuthorsByBookTitle(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Author>) readAll("select * from tbl_author a inner join tbl_book_authors ba on ba.authorId = a.authorId inner join tbl_book b on b.bookId = ba.bookId where b.title like ?", new Object[] {name});
+	}
+	
+	//READ AUTHORS BY NAME OR TITLE
+	public List<Author> readAuthorsByBookTitleorName(String name,int pageNo) throws ClassNotFoundException, SQLException{
+		setPageNo(pageNo);
+		name="%"+name+"%";
+		return (List<Author>) readAll("select * from tbl_author a inner join tbl_book_authors ba on ba.authorId = a.authorId inner join tbl_book b on b.bookId = ba.bookId where b.title like ? or a.authorName like ?", new Object[] {name,name});
+	}
+	
 	@Override
 	public List<Author> extractData(ResultSet rs) throws SQLException {
 		List<Author> authors = new ArrayList<Author>();

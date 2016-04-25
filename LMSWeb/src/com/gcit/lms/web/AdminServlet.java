@@ -118,7 +118,10 @@ public class AdminServlet extends HttpServlet {
 		case "/selectBranch":
 				selectBranch(request,response);
 				break;
-				
+		
+		case "/searchAuthors":
+				searchAuthors(request,response);
+				break;		
 				
 		case "/borrowerBranch":
 			   borrowerBranch(request,response);
@@ -322,9 +325,7 @@ private void pageBorrower(HttpServletRequest request,
 				updateBookCopies(request,response);
 				break;
 				
-		case "/searchAuthors":
-				searchAuthors(request,response);
-				break;
+	
 				
 		case "/searchBorrower":
 				searchBorrower(request,response);
@@ -903,16 +904,51 @@ private void pageBorrower(HttpServletRequest request,
 			throws ServletException, IOException {
 		AdministratorService service = new AdministratorService();
 		String searchString = request.getParameter("searchString");
-		List<Author> authors;
+		String option = request.getParameter("text");
+		StringBuilder str = new StringBuilder();
+		
 		try {
-			authors = service.getAllAuthorsByName(searchString, 1);
-			request.setAttribute("authors", authors);
+			List<Author> authors = null;
+			if(option.equals("Search by Authors")){
+				authors = service.getAllAuthorsByAuthorName(searchString, 1);
+			}else if(option.equals("Search by Books")){
+				authors = service.getAllAuthorsByTitle(searchString, 1);
+			}else if(option.equals("Search by All")){
+				authors = service.getAllAuthorsByAuthorOrTitle(searchString, 1);
+			}
+			
+			str.append("<div class='row'><div class='col-md-6'>"
+					+ "<table border='2' id='authorsTable' class='table'><tr><th>Author Name</th><th>Book Title</th><th>Edit</th><th>Delete</th></tr>");
+			for (Author a : authors) {
+				str.append("<tr><td>" + a.getAuthorName()+"</td>");
+				if(a.getBooks()!=null && a.getBooks().size() >0){
+					
+					str.append("<td>");
+					for(Book b: a.getBooks()){
+						str.append(b.getTitle());
+						str.append(",");
+						
+					
+						
+					}
+				}	
+			
+				str.append("<td align='center'><button type='button' class='btn btn btn-primary' data-toggle='modal' data-target='#myModal1' href='editauthor.jsp?authorId=<%=a.getAuthorId()%>'>EDIT</button></td>"
+						+ "	<td><button type='button' class='btn btn-sm btn-danger'	onclick='deleteAuthor" + a.getAuthorName()+"'>DELETE</button></td></tr>	</table></div></div></div>" );
+			}
+			
+			
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/viewauthors.jsp");
-		rd.forward(request, response);
+		try {
+			response.getWriter().append(str.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -933,64 +969,7 @@ private void pageBorrower(HttpServletRequest request,
 		
 	}
 	
-	
-	
-/*	//DELETE BOOK
-		private void deleteBook(HttpServletRequest request,
-				HttpServletResponse response) {
-			
-			Integer BookId = Integer.parseInt(request.getParameter("bookId"));
-			AdministratorService service = new AdministratorService();
-			StringBuilder str = new StringBuilder();
-			Book b = new Book();
-			b.setBookId(BookId);
-			
-			try {
-				
-				service.deleteBook(b);
-				Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
-				
-				System.out.println(pageNo);
-				List<Book> books = service.getAllBooks(pageNo);
-				str.append("<tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th>");
-				for(Book bk: books){
-					
-					if(bk.getAuthors()!=null && bk.getAuthors().size() >0){
-						str.append("<tr><td>" + bk.getTitle() +"</td>");
-						str.append("<td>");
-						for(Author a: bk.getAuthors()){
-							str.append(a.getAuthorName()+ ", " );
-							
-							
-						}
-					}	
-					
-					str.append("<td><button type='button'+ class='btn btn-primary' onclick='javascript:location.href='editBook?bookId="
-					+b.getBookId()+"''>EDIT</button><td>"
-					+"<button type='button' class='btn btn-danger' onclick='deleteBook("+b.getBookId()+")'>DELETE</button></tr>");
-				}   
-				
-			
 
-							
-			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-				response.getWriter().append(str.toString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}*/
-	
-	
-
-	
-	
 	
 	
 	private void searchBooks(HttpServletRequest request,
@@ -1014,24 +993,28 @@ private void pageBorrower(HttpServletRequest request,
 			
 				
 			
-			str.append("<tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th></tr>");
+			str.append("<div class='row'><div class='col-md-6'>"
+					+ "<table border='2' id='bookTable' class='table'><tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th></tr>");
+			str.append("<tr>");
 			for (Book bk : books) {
-				str.append("<tr><td>" + bk.getTitle()+"</td>");
+				str.append("<td>" + bk.getTitle()+"</td>");
+				str.append("<td>");
 				if(bk.getAuthors()!=null && bk.getAuthors().size() >0){
 					
-					str.append("<td>");
+					
 					for(Author a: bk.getAuthors()){
 						str.append(a.getAuthorName());
 						str.append(",");
+						
 					
+						
 					}
 				}	
 			
 			
-				str.append("<td align='center'><button type='button' class='btn btn btn-primary' data-toggle='modal' data-target='#myModal1' href='editauthor.jsp?authorId=<%=a.getAuthorId()%>'>EDIT</button></td>"
-						+ "	<td><button type='button' class='btn btn-sm btn-danger'	onclick='deleteAuthor" + +b.getBookId()+"'>DELETE</button></td></tr>" );
+				str.append("</td><td align='center'><button type='button' class='btn btn btn-primary' data-toggle='modal' data-target='#myModal1' href='editauthor.jsp?authorId=<%=a.getAuthorId()%>'>EDIT</button></td>"
+						+ "	<td><button type='button' class='btn btn-sm btn-danger'	onclick='deleteAuthor" + +b.getBookId()+"'>DELETE</button></td></tr></table></div></div></div>" );
 				}
-			
 			
 			
 			

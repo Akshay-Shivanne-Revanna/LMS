@@ -30,16 +30,30 @@ function deleteAuthor(authorId){
 		});
 }
 
-function searchAuthor(searchString){
-	out.println("i am in searchAuthor")
-	$.ajax({
-		  url: "searchAuthor",
+var sType="Any";
+
+
+$(function(){
+	$('#searchType li a').on('click', function(){
+		console.log("Selected option :"+$(this).text());
+		sType=$(this).text();
+	});
+});
+
+   function searchAuthors(){
+	   console.log($('#searchString'));
+	   ///if($('#searchString').val().legth<3) return;
+    $.ajax({
+    	
+		  url: "searchAuthors",
 		  data:{
-			  authorId: searchString
-		  }
+			  searchString:$('#searchStrings').val(),
+			  text: sType	
+			  }
 		}).done(function(data) {
 		  $('#searchResults').html(data);
 		});
+   
 }
 
 
@@ -48,41 +62,40 @@ function searchAuthor(searchString){
 <h2>Available Authors in LMS</h2>
 ${result}
 
-<form action="searchAuthors" method="post">
-<div class="row">
-   <div class="col-lg-6">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Name"
-			aria-describedby="basic-addon1" name="searchString" onchange="searchAuthor()">
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-       	
-        <ul class="dropdown-menu dropdown-menu-right">
-          <li><button onclick="searchAuthor();"> SEARCH  BY  AUTHOR </button></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-</form>
 
-<!-- <form action="searchAuthors" method="post">
-	<div class="input-group">
-		<input type="text" class="form-control" placeholder="Author Name"
-			aria-describedby="basic-addon1" name="searchString" onchange="searchAuthor()">
-		<button onclick="searchAuthor();">Search!</button>
-	</div>
-</form> -->
 
-<div class="alert alert-danger" role="alert">
+
+<!-- <div class="alert alert-danger" role="alert">
   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <span class="sr-only">Error:</span>
   
 </div>
+ -->
+
+
+       <div class="row">
+       <div class="cl-lg-6">
+       <div class="input-group">
+       
+      <input type="text" class="form-control" placeholder="Author Name"
+			aria-describedby="basic-addon1" name="searchString" id="searchStrings" onkeyup="searchAuthors()">
+			<div class = "input-group-btn">
+			<button type = "button" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class = "caret"></span> <span class="sr-only">Toggle Dropdown</span>
+   			</button>
+   	
+   			 <ul id="searchType" class = "dropdown-menu dropdown-menu-right">
+   				<li><a tabindex="-1" href="#">Search by Authors</a></li>
+   				<li><a tabindex="-1" href="#">Search by Books</a></li>
+   				<li role="separator" class="divider"></li>
+ 				<li><a tabindex="-1" href="#">Search by All</a></li>  			
+   </ul>
+   <button type="button" class="btn btn-success" onclick="searchAuthors()">Search</button>
+        </div>
+        </div>
+        </div>
+        </div>
+        
 
 <div id="searchResults">
 <nav>
@@ -121,6 +134,7 @@ ${result}
 		<table border="2" id="authorsTable" class="table">
 			<tr>
 				<th>Author Name</th>
+				<th>Book Title</th>
 				<th>Edit</th>
 				<th>Delete</th>
 			</tr>
@@ -134,6 +148,19 @@ ${result}
 						out.println(a.getAuthorName());
 					%>
 				</td>
+				<td>
+					<%
+						if (a.getBooks() != null && a.getBooks().size() > 0) {
+								for (Book b : a.getBooks()) {
+									out.println(b.getTitle());
+									out.println(", ");
+								}
+							}
+					%>
+				</td>
+
+
+
 
 
 				<td align="center"><button type="button"

@@ -58,7 +58,7 @@ function deleteBook(bookId){
      	
  		  url: "searchBooks",
  		  data:{
- 			  searchString:$('#searchString').val(),
+ 			  searchString:$('#searchStrings').val(),
  			  text: sType	
  			  }
  		}).done(function(data) {
@@ -75,11 +75,11 @@ ${result}
 
 
 
-<div class="alert alert-danger" role="alert">
+<!-- <div class="alert alert-danger" role="alert">
   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <span class="sr-only">Error:</span>
   
-</div>
+</div> -->
 
 
 <form action="searchBooks">
@@ -88,7 +88,7 @@ ${result}
        <div class="input-group">
        
       <input type="text" class="form-control" placeholder="Author Name"
-			aria-describedby="basic-addon1" name="searchString" id="searchString" onChange="searchAuthors()">
+			aria-describedby="basic-addon1" name="searchString" id="searchStrings" onkeyup="searchAuthors()">
 			<div class = "input-group-btn">
 			<button type = "button" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown" aria-haspopup="true" aria-expanded="false">
 			<span class = "caret"></span> <span class="sr-only">Toggle Dropdown</span>

@@ -240,7 +240,7 @@ public class AdministratorService {
 	}
 	
 	
-	//LIST ALL AUTHORS BY NAME
+	//LIST ALL BOOKS BY NAME
 		public List<Book> getAllBooksByName(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
 			ConnectionUtil c = new ConnectionUtil();
 			Connection conn = c.getConnection();
@@ -256,6 +256,59 @@ public class AdministratorService {
 			return null;
 		}
 	
+		
+		//LIST ALL AUTHORS BY AUTHOR NAME
+		public List<Author> getAllAuthorsByAuthorName(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+				try{
+					AuthorDAO adao = new AuthorDAO(conn);
+					return adao.readAuthorsByAuthorName(searchString,pageNo);
+				}catch (Exception e){
+					e.printStackTrace();
+						//conn.rollback();
+				}finally{
+					conn.close();
+				}
+				return null;
+			}
+		
+		
+		//LIST ALL AUTHORS BY AUTHOR NAME
+		public List<Author> getAllAuthorsByTitle(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+			try{
+					AuthorDAO adao = new AuthorDAO(conn);
+					return adao.readAuthorsByBookTitle(searchString,pageNo);
+				}catch (Exception e){
+					e.printStackTrace();
+					//conn.rollback();
+			}finally{
+				conn.close();
+				}
+					return null;
+			}
+		
+		//LIST ALL AUTHORS BY AUTHOR NAME
+		public List<Author> getAllAuthorsByAuthorOrTitle(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
+			ConnectionUtil c = new ConnectionUtil();
+			Connection conn = c.getConnection();
+				try{
+					AuthorDAO adao = new AuthorDAO(conn);
+					return adao.readAuthorsByBookTitleorName(searchString,pageNo);
+				}catch (Exception e){
+					e.printStackTrace();
+					//conn.rollback();
+				}finally{
+					conn.close();
+					}
+					return null;
+				}
+		
+		
+		
+		
 		//LIST ALL BOOKS BY AUTHOR NAME
 		public List<Book> getAllBooksByAuthor(String searchString,Integer pageNo) throws ClassNotFoundException, SQLException{
 			ConnectionUtil c = new ConnectionUtil();
