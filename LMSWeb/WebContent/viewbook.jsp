@@ -34,44 +34,38 @@ function deleteBook(bookId){
 		});
 }
 
-function searchBookByName(searchString){
-	
-	$.ajax({
-		  url: "searchBook",
-		  data:{
-			  bookId: searchString
-		  }
-		}).done(function(data) {
-		  $('#searchResults').html(data);
-		});
-}
-
-function searchBookByAuthor(searchString){
-	out.println("i am in searchAuthor")
-	$.ajax({
-		  url: "searchBookByAuthor",
-		  data:{
-			  authorId: searchString
-		  }
-		}).done(function(data) {
-		  $('#searchResults').html(data);
-		});
-}
-
-function searchBookByAuthor(searchString){
-	out.println("i am in searchAuthor")
-	$.ajax({
-		  url: "searchOverAllBooks",
-		  data:{
-			  bookId: searchString
-		  }
-		}).done(function(data) {
-		  $('#searchResults').html(data);
-		});
-}
 
 
+ 
+ var sType="Any";
 
+
+ $(function(){
+	 $('#searchType li a').on('click', function(){
+	 		console.log("Selected option :"+$(this).text());
+	 		sType=$(this).text();
+	 	});
+ });
+
+    function searchBooks(){
+ 	   console.log($('#searchString'));
+ 	  	$('#searchType li a').on('click', function(){
+ 	 		console.log("Selected option :"+$(this).text());
+ 	 		sType=$(this).text();
+ 	 	});
+ 	   ///if($('#searchString').val().legth<3) return;
+     $.ajax({
+     	
+ 		  url: "searchBooks",
+ 		  data:{
+ 			  searchString:$('#searchString').val(),
+ 			  text: sType	
+ 			  }
+ 		}).done(function(data) {
+ 		  $('#searchResults').html(data);
+ 		});
+    
+ }
 </script>
 
 <title>LMS</title>
@@ -79,30 +73,6 @@ function searchBookByAuthor(searchString){
 <h2>Welcome to GCIT Library Management System - Admin</h2>
 ${result}
 
-<form action="searchOverAllBooks" method="post">
-	<div class="input-group">
-		<input type="text" class="form-control" placeholder="Name"
-			aria-describedby="basic-addon1" name="searchString" onchange="searchBookByAuthorOrTitle()">
-		<button onclick="searchBookByAuthorOrTitle()">Search</button>
-	</div>
-</form>
-<br/><br/>
-<form action="searchBooks" method="post">
-	<div class="input-group">
-		<input type="text" class="form-control" placeholder="Book Name"
-			aria-describedby="basic-addon1" name="searchString" onchange="searchBookByName()">
-		<button onclick="searchBook();">Search By Book Title</button>
-	</div>
-</form>
-<br/><br/>
-<form action="searchBookByAuthor" method="post">
-	<div class="input-group">
-		<input type="text" class="form-control" placeholder="Author Name"
-			aria-describedby="basic-addon1" name="searchString" onchange="searchBookByAuthor()">
-		<button onclick="searchBookByAuthor()">Search By Author Name</button>
-	</div>
-</form>
-<br/><br/>
 
 
 <div class="alert alert-danger" role="alert">
@@ -110,6 +80,34 @@ ${result}
   <span class="sr-only">Error:</span>
   
 </div>
+
+
+<form action="searchBooks">
+       <div class="row">
+       <div class="cl-lg-6">
+       <div class="input-group">
+       
+      <input type="text" class="form-control" placeholder="Author Name"
+			aria-describedby="basic-addon1" name="searchString" id="searchString" onChange="searchAuthors()">
+			<div class = "input-group-btn">
+			<button type = "button" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class = "caret"></span> <span class="sr-only">Toggle Dropdown</span>
+   			</button>
+   	
+   			 <ul id="searchType" class = "dropdown-menu dropdown-menu-right">
+   				<li><a tabindex="-1" href="#">Search by Authors</a></li>
+   				<li><a tabindex="-1" href="#">Search by Books</a></li>
+   				<li role="separator" class="divider"></li>
+ 				<li><a tabindex="-1" href="#">Search by All</a></li>  			
+   </ul>
+   <button type="button" class="btn btn-success" onclick="searchBooks()">Search</button>
+        </div>
+        </div>
+        </div>
+        </div>
+        </form>
+
+
 
 <div id="searchResults">
 <nav>

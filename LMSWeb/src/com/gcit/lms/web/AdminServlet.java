@@ -132,7 +132,9 @@ public class AdminServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 				break;
-				
+		case "/searchBooks":
+			searchBooks(request,response);
+			break;			
 				
 		default:
 			break;
@@ -336,22 +338,7 @@ private void pageBorrower(HttpServletRequest request,
 		case "/searchBranch":
 			searchBranch(request,response);
 			break;
-			
-			
-		case "/searchBooks":
-			searchBooks(request,response);
-			break;	
-			
-		case "/searchBookByAuthor":
-			searchBookByAuthor(request,response);
-			break;
-			
-			
-		case "/searchOverAllBooks":
-			searchOverAllBooks(request,response);
-			break;	
-			
-			
+	
 		default:
 			break;
 		}
@@ -946,68 +933,129 @@ private void pageBorrower(HttpServletRequest request,
 		
 	}
 	
+	
+	
+/*	//DELETE BOOK
+		private void deleteBook(HttpServletRequest request,
+				HttpServletResponse response) {
+			
+			Integer BookId = Integer.parseInt(request.getParameter("bookId"));
+			AdministratorService service = new AdministratorService();
+			StringBuilder str = new StringBuilder();
+			Book b = new Book();
+			b.setBookId(BookId);
+			
+			try {
+				
+				service.deleteBook(b);
+				Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+				
+				System.out.println(pageNo);
+				List<Book> books = service.getAllBooks(pageNo);
+				str.append("<tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th>");
+				for(Book bk: books){
+					
+					if(bk.getAuthors()!=null && bk.getAuthors().size() >0){
+						str.append("<tr><td>" + bk.getTitle() +"</td>");
+						str.append("<td>");
+						for(Author a: bk.getAuthors()){
+							str.append(a.getAuthorName()+ ", " );
+							
+							
+						}
+					}	
+					
+					str.append("<td><button type='button'+ class='btn btn-primary' onclick='javascript:location.href='editBook?bookId="
+					+b.getBookId()+"''>EDIT</button><td>"
+					+"<button type='button' class='btn btn-danger' onclick='deleteBook("+b.getBookId()+")'>DELETE</button></tr>");
+				}   
+				
+			
+
+							
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				response.getWriter().append(str.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}*/
+	
+	
+
+	
+	
+	
+	
 	private void searchBooks(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		AdministratorService service = new AdministratorService();
 		String searchString = request.getParameter("searchString");
-		List<Book> books;
+		String option = request.getParameter("text");
+		StringBuilder str = new StringBuilder();
+		Book b = new Book();
+		
 		try {
-			books = service.getAllBooksByName(searchString, 1);
-			request.setAttribute("books", books);
+			List<Book> books = null;
+			if(option.equals("Search by Authors")){
+				books = service.getAllBooksByAuthor(searchString, 1);
+			}else if(option.equals("Search by Books")){
+				books = service.getAllBooksByName(searchString, 1);
+			}else if(option.equals("Search by All")){
+				books = service.getAllBooksByAuthorOrTitle(searchString, 1);
+			}
+			
+				
+			
+			str.append("<tr><th>Book Title</th><th>Author</th><th>Edit</th><th>Delete</th></tr>");
+			for (Book bk : books) {
+				str.append("<tr><td>" + bk.getTitle()+"</td>");
+				if(bk.getAuthors()!=null && bk.getAuthors().size() >0){
+					
+					str.append("<td>");
+					for(Author a: bk.getAuthors()){
+						str.append(a.getAuthorName());
+						str.append(",");
+					
+					}
+				}	
+			
+			
+				str.append("<td align='center'><button type='button' class='btn btn btn-primary' data-toggle='modal' data-target='#myModal1' href='editauthor.jsp?authorId=<%=a.getAuthorId()%>'>EDIT</button></td>"
+						+ "	<td><button type='button' class='btn btn-sm btn-danger'	onclick='deleteAuthor" + +b.getBookId()+"'>DELETE</button></td></tr>" );
+				}
+			
+			
+			
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/viewbook.jsp");
-		rd.forward(request, response);
+		try {
+			response.getWriter().append(str.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
+	
 	
-	private void searchBookByAuthor(HttpServletRequest request,
-			HttpServletResponse response) {
-		System.out.println("i am inside function");
-		AdministratorService service = new AdministratorService();
-		String searchString = request.getParameter("searchString");
-		List<Book> books;
-		try {
-			books = service.getAllBooksByAuthor(searchString, 1);
-			request.setAttribute("books", books);
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		RequestDispatcher rd = request.getRequestDispatcher("/viewbook.jsp");
-		try {
-			rd.forward(request, response);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 	
-	//SEARCH BY AUTHOR NAME OR BOOK TITLE
-	private void searchOverAllBooks(HttpServletRequest request,
-			HttpServletResponse response) {
-		AdministratorService service = new AdministratorService();
-		String searchString = request.getParameter("searchString");
-		List<Book> books;
-		try {
-			books = service.getAllBooksByAuthorOrTitle(searchString, 1);
-			request.setAttribute("books", books);
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		RequestDispatcher rd = request.getRequestDispatcher("/viewbook.jsp");
-		try {
-			rd.forward(request, response);
-		} catch (ServletException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+	
+	
+	
+
+	
+
 	
 	private void searchPublishers(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
